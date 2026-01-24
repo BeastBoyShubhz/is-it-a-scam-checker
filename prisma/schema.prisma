@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model Report {
+  id              String   @id @default(cuid())
+  type            String   // URL, PHONE, EMAIL
+  value_raw       String
+  value_normalised String
+  notes           String?
+  country         String   @default("AU")
+  ip_hash         String
+  user_agent_hash String
+  created_at      DateTime @default(now())
+
+  @@index([type, value_normalised])
+  @@index([created_at])
+}

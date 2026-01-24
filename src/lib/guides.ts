@@ -127,10 +127,19 @@ export const guides: Guide[] = [
     date: '2025-01-20',
     content: `
         <h2>Why Screenshots?</h2>
-        <p>Scammers often use image-based messages to bypass text filters. Our tool extracts text from these images to uncover hidden keywords.</p>
-        <h2>What to Look For</h2>
-        <p>Visual signs of a scam include poor quality logos, mismatched fonts, and "Verify" buttons that are just images, not real buttons.</p>
-        <p><a href="/guides/check-scam-screenshots">Read the full guide here -></a></p>
+        <p>Scammers often send messages via SMS, WhatsApp, or instant messengers that are hard to copy-paste. Taking a screenshot is a quick way to capture the evidence. Our Scam Checker tool can now read text directly from your screenshots to analyze them for danger signs.</p>
+
+        <h2>How it works</h2>
+        <ul>
+            <li><strong>Take a screenshot:</strong> Capture the message, email, or website.</li>
+            <li><strong>Upload to our tool:</strong> Select the "Image" tab on the homepage.</li>
+            <li><strong>Instant Analysis:</strong> We extract the text in your browser (privately) and scan it for keywords like "urgent," "verify," or payment demands.</li>
+        </ul>
+
+        <h2>Common Screenshot Scams</h2>
+        <p><strong>"Wrong Number" Crypto Scams:</strong> A random person texts you, acts friendly, and then tries to get you to move to WhatsApp to discuss "investments."</p>
+        <p><strong>Delivery Flubs:</strong> Messages saying "delivery failed" with a link, often sent as iMessage or RCS to look official.</p>
+        <p><strong>Tech Support Popups:</strong> Screenshots of your phone or computer showing a "Virus Detected" warning with a phone number to call.</p>
         `
   },
   {
@@ -140,10 +149,18 @@ export const guides: Guide[] = [
     date: '2025-01-21',
     content: `
         <h2>The Fake Invoice Ploy</h2>
-        <p>Scammers send a PDF receipt for a service you never bought. They want you to panic and call their fake support number.</p>
+        <p>Fake invoices are a massive threat to businesses and freelancers. Scammers send authentic-looking PDF or Word documents claiming you owe money for services like Norton AntiVirus, Geek Squad, or domain renewals. They want you to panic and call their fake support number.</p>
+        
+        <h2>Signs of a Fake Invoice</h2>
+        <ul>
+            <li><strong>Urgency:</strong> Claims your account will be charged "within 24 hours" if you don't act.</li>
+            <li><strong>Phone Numbers:</strong> Instead of a link, they ask you to call a support number to "cancel" the charge.</li>
+            <li><strong>Generic Greetings:</strong> "Dear Customer" instead of your name.</li>
+            <li><strong>Personal Gmail/Yahoo addresses:</strong> Instead of official company domains.</li>
+        </ul>
+
         <h2>Safe Checking</h2>
         <p>Never call the number on the invoice. Upload the PDF to our checker to analyze the text for scam scripts without opening the file on your computer.</p>
-        <p><a href="/guides/check-scam-invoices-pdf">Read the full guide here -></a></p>
         `
   }
 ];

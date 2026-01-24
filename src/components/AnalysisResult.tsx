@@ -5,12 +5,16 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
+import { ReportModal } from './ReportModal';
+
 interface AnalysisResultProps {
     result: ScamAnalysisResult | null;
+    input?: string; // Original input text
 }
 
-export function AnalysisResultDisplay({ result }: AnalysisResultProps) {
+export function AnalysisResultDisplay({ result, input }: AnalysisResultProps) {
     const [copied, setCopied] = React.useState(false);
+    const [isReportOpen, setIsReportOpen] = React.useState(false);
 
     if (!result) return null;
 
@@ -100,6 +104,27 @@ export function AnalysisResultDisplay({ result }: AnalysisResultProps) {
                             No specific threat patterns were found, but this does not guarantee safety.
                         </div>
                     )}
+
+                    <div className="border-t pt-4 mt-2">
+                        <Button
+                            variant="secondary"
+                            className="w-full gap-2 text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 h-10"
+                            onClick={() => setIsReportOpen(true)}
+                        >
+                            <AlertTriangle className="w-4 h-4" />
+                            Report this as a Scam
+                        </Button>
+                        <p className="text-center text-xs text-muted-foreground mt-2">
+                            Help the community by adding this to our scam database.
+                            <br />We verify reports anonymously.
+                        </p>
+                    </div>
+
+                    <ReportModal
+                        isOpen={isReportOpen}
+                        onClose={() => setIsReportOpen(false)}
+                        initialValue={input}
+                    />
                 </div>
             </CardContent>
         </Card>

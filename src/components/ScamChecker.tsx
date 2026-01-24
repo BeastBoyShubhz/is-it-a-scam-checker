@@ -11,7 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { FileUploader } from './FileUploader';
 import { extractTextFromImage, extractTextFromFile } from '@/lib/extractors';
 
-import { Globe, Mail, MessageSquare, Image as ImageIcon, FileText } from 'lucide-react';
+import { Globe, Mail, MessageSquare, Image as ImageIcon, FileText, Clipboard, X } from 'lucide-react';
 
 type TabType = 'url' | 'email' | 'text' | 'image' | 'file';
 
@@ -31,8 +31,8 @@ export function ScamChecker({ defaultTab = 'url' }: ScamCheckerProps) {
 
         setLoading(true);
         // Simulate a brief delay for "scanning" feel
-        setTimeout(() => {
-            const res = calculateRiskScore(input);
+        setTimeout(async () => {
+            const res = await calculateRiskScore(input);
             setResult(res);
             setLoading(false);
         }, 600);
@@ -42,6 +42,15 @@ export function ScamChecker({ defaultTab = 'url' }: ScamCheckerProps) {
         setInput('');
         setResult(null);
         setExtractionError(null);
+    };
+
+    const handlePaste = async () => {
+        try {
+            const text = await navigator.clipboard.readText();
+            if (text) setInput(text);
+        } catch (err) {
+            console.error('Failed to read clipboard', err);
+        }
     };
 
     const handleTabChange = (tab: TabType) => {
@@ -137,13 +146,27 @@ export function ScamChecker({ defaultTab = 'url' }: ScamCheckerProps) {
                     <div className="space-y-4">
                         {activeTab === 'url' && (
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Paste the Website Link / URL</label>
-                                <Input
-                                    placeholder="e.g. http://example-bank-login.com"
-                                    value={input}
-                                    onChange={(e) => setInput(e.target.value)}
-                                    className="h-12 text-lg"
-                                />
+                                <div className="flex justify-between items-center">
+                                    <label className="text-sm font-medium">Paste the Website Link / URL</label>
+                                    <div className="flex gap-2">
+                                        <Button variant="ghost" size="sm" onClick={handlePaste} className="h-7 text-xs gap-1">
+                                            <Clipboard className="w-3 h-3" /> Paste
+                                        </Button>
+                                        {input && (
+                                            <Button variant="ghost" size="sm" onClick={() => setInput('')} className="h-7 text-xs gap-1 text-red-500 hover:text-red-600">
+                                                <X className="w-3 h-3" /> Clear
+                                            </Button>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="relative">
+                                    <Input
+                                        placeholder="e.g. http://example-bank-login.com"
+                                        value={input}
+                                        onChange={(e) => setInput(e.target.value)}
+                                        className="h-12 text-lg pr-12"
+                                    />
+                                </div>
                             </div>
                         )}
 
@@ -175,11 +198,21 @@ export function ScamChecker({ defaultTab = 'url' }: ScamCheckerProps) {
                                             ? 'Extracted Text (Edit if needed)'
                                             : `Paste the ${activeTab === 'email' ? 'Email' : 'Message'} Content`}
                                     </label>
-                                    {(activeTab === 'image' || activeTab === 'file') && (
-                                        <Button variant="ghost" size="sm" onClick={() => setInput('')} className="h-6 text-xs text-muted-foreground">
-                                            Upload Different File
+                                    <div className="flex gap-2 items-center">
+                                        {(activeTab === 'image' || activeTab === 'file') && (
+                                            <Button variant="ghost" size="sm" onClick={() => setInput('')} className="h-6 text-xs text-muted-foreground">
+                                                Upload Different File
+                                            </Button>
+                                        )}
+                                        <Button variant="ghost" size="sm" onClick={handlePaste} className="h-7 text-xs gap-1">
+                                            <Clipboard className="w-3 h-3" /> Paste
                                         </Button>
-                                    )}
+                                        {input && (
+                                            <Button variant="ghost" size="sm" onClick={() => setInput('')} className="h-7 text-xs gap-1 text-red-500 hover:text-red-600">
+                                                <X className="w-3 h-3" /> Clear
+                                            </Button>
+                                        )}
+                                    </div>
                                 </div>
                                 <Textarea
                                     placeholder={activeTab === 'email' ? "Paste the full email body here..." : "Paste the message content here..."}
@@ -205,7 +238,7 @@ export function ScamChecker({ defaultTab = 'url' }: ScamCheckerProps) {
                             </Button>
                             {result && (
                                 <Button variant="outline" onClick={handleClear} className="h-12 px-6">
-                                    Clear
+                                    Reset
                                 </Button>
                             )}
                         </div>
@@ -213,7 +246,7 @@ export function ScamChecker({ defaultTab = 'url' }: ScamCheckerProps) {
                 </CardContent>
             </Card>
 
-            <AnalysisResultDisplay result={result} />
+            <AnalysisResultDisplay result={result} input={input} />
         </div>
     );
 }

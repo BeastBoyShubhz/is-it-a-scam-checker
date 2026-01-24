@@ -1,4 +1,5 @@
 
+import { LatestScams } from '@/components/LatestScams';
 import { ScamChecker } from '@/components/ScamChecker';
 import { FAQ } from '@/components/FAQ';
 import { TrustSection } from '@/components/TrustSection';
@@ -44,8 +45,10 @@ export default function Home() {
                     <a id="checker" className="scroll-mt-24"></a>
                     <ScamChecker />
 
-                    <p className="text-sm text-slate-500 mt-6">
-                        Disclaimer: This tool provides guidance based on common patterns but cannot guarantee 100% accuracy.
+                    <p className="text-sm text-slate-500 mt-6 max-w-lg mx-auto leading-relaxed">
+                        <strong>Privacy Note:</strong> We don't store what you paste. Reports are stored to help others.
+                        <br />
+                        This tool provides guidance, not certainty. Always verify with the official source.
                     </p>
                 </div>
             </section>
@@ -73,6 +76,8 @@ export default function Home() {
                     </div>
                 </div>
             </section>
+
+            <LatestScams />
 
             {/* FAQ Section */}
             <FAQ />
