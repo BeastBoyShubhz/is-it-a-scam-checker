@@ -61,3 +61,4 @@ This project is optimized for deployment on Vercel.
 We take privacy seriously.
 - **Client-Side Processing**: All file analysis (OCR, PDF reading) is done in the user's browser via Web Workers.
 - **No Persistence**: Nothing you upload is saved to a database.
+deploy test
