@@ -16,8 +16,9 @@ export async function generateStaticParams() {
     }));
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const guide = getGuideBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const { slug } = await params;
+    const guide = getGuideBySlug(slug);
     if (!guide) return { title: 'Not Found' };
 
     return {
@@ -32,35 +33,38 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
 }
 
-export default function GuidePage({ params }: Props) {
-    const guide = getGuideBySlug(params.slug);
+export default async function GuidePage({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const guide = getGuideBySlug(slug);
 
     if (!guide) {
         notFound();
     }
 
     return (
-        <article className="container mx-auto px-4 py-12 max-w-3xl">
-            <Link href="/guides" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-8">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Guides
-            </Link>
+        <div className="bg-slate-50 min-h-screen">
+            <article className="container mx-auto px-4 py-12 max-w-3xl">
+                <Link href="/guides" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-8">
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Back to Guides
+                </Link>
 
-            <h1 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900">{guide.title}</h1>
-            <p className="text-slate-500 mb-8">Published on {new Date(guide.date).toLocaleDateString()}</p>
+                <h1 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900">{guide.title}</h1>
+                <p className="text-slate-500 mb-8">Published on {new Date(guide.date).toLocaleDateString()}</p>
 
-            <div
-                className="prose prose-slate max-w-none mb-12"
-                dangerouslySetInnerHTML={{ __html: guide.content }}
-            />
+                <div
+                    className="prose prose-slate max-w-none mb-12"
+                    dangerouslySetInnerHTML={{ __html: guide.content }}
+                />
 
-            <div className="bg-slate-100 p-8 rounded-xl text-center">
-                <h3 className="text-xl font-bold mb-4">Suspicious about a message you received?</h3>
-                <p className="mb-6 text-slate-600">Don't guess. Check it instantly with our free tool.</p>
-                <Button asChild size="lg">
-                    <Link href="/#checker">Check for Scam</Link>
-                </Button>
-            </div>
-        </article>
+                <div className="bg-white p-8 rounded-xl text-center border shadow-sm">
+                    <h3 className="text-xl font-bold mb-4">Suspicious about a message you received?</h3>
+                    <p className="mb-6 text-slate-600">Don't guess. Check it instantly with our free tool.</p>
+                    <Button asChild size="lg">
+                        <Link href="/#checker">Check for Scam</Link>
+                    </Button>
+                </div>
+            </article>
+        </div>
     );
 }
