@@ -9,6 +9,7 @@
     "lint": "eslint",
     "type-check": "tsc --noEmit",
     "test": "vitest",
+    "test:smoke": "node scripts/smoke-test.js",
     "postinstall": "prisma generate"
   },
   "dependencies": {

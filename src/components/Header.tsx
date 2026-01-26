@@ -14,9 +14,10 @@ export function Header() {
                 <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
                     <Link href="/how-it-works" className="hover:text-primary transition-colors">How it Works</Link>
                     <Link href="/guides" className="hover:text-primary transition-colors">Guides</Link>
+                    <Link href="/reports" className="hover:text-primary transition-colors">Reports</Link>
                     <Link href="/about" className="hover:text-primary transition-colors">About</Link>
                     <Button asChild variant="default" size="sm">
-                        <Link href="/#checker">Check for Free</Link>
+                        <Link href="/check">Check for Free</Link>
                     </Button>
                 </nav>
             </div>

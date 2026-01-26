@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     description: 'Real-time feed of reported scams, phishing attempts, and fraudulent numbers reported by the community.',
 };
 
+export const dynamic = 'force-dynamic';
+
+
 function maskValue(type: string, val: string) {
     if (!val) return '';
     const t = type.toLowerCase();

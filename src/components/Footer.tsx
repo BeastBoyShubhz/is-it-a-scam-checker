@@ -19,6 +19,8 @@ export function Footer() {
                             <li><Link href="/about" className="hover:text-white">About Us</Link></li>
                             <li><Link href="/how-it-works" className="hover:text-white">How it Works</Link></li>
                             <li><Link href="/guides" className="hover:text-white">Scam Guides</Link></li>
+                            <li><Link href="/reports" className="hover:text-white">Community Reports</Link></li>
+                            <li><Link href="/check" className="hover:text-white">Check a Scam</Link></li>
                             <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
                             <li><Link href="/disclaimer" className="hover:text-white">Disclaimer</Link></li>
                         </ul>
