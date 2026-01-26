@@ -58,6 +58,66 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
                 <h1 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900">{guide.title}</h1>
                 <p className="text-slate-500 mb-8">Updated {new Date(guide.date).toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
 
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify({
+                            '@context': 'https://schema.org',
+                            '@type': 'Article',
+                            headline: guide.title,
+                            description: guide.metaDescription || guide.excerpt,
+                            datePublished: guide.date,
+                            dateModified: guide.date,
+                            author: {
+                                '@type': 'Person',
+                                name: 'Shubham Singla',
+                                url: 'https://shubhamsingla.tech'
+                            },
+                            publisher: {
+                                '@type': 'Organization',
+                                name: 'Scam Checker',
+                                logo: {
+                                    '@type': 'ImageObject',
+                                    url: 'https://scamchecker.app/icon.png'
+                                }
+                            },
+                            mainEntityOfPage: {
+                                '@type': 'WebPage',
+                                '@id': `https://scamchecker.app/guides/${guide.slug}`
+                            }
+                        })
+                    }}
+                />
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify({
+                            '@context': 'https://schema.org',
+                            '@type': 'BreadcrumbList',
+                            itemListElement: [
+                                {
+                                    '@type': 'ListItem',
+                                    position: 1,
+                                    name: 'Home',
+                                    item: 'https://scamchecker.app'
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 2,
+                                    name: 'Guides',
+                                    item: 'https://scamchecker.app/guides'
+                                },
+                                {
+                                    '@type': 'ListItem',
+                                    position: 3,
+                                    name: guide.title,
+                                    item: `https://scamchecker.app/guides/${guide.slug}`
+                                }
+                            ]
+                        })
+                    }}
+                />
+
                 <div
                     className="prose prose-slate max-w-none mb-12 
                         prose-headings:text-slate-900 

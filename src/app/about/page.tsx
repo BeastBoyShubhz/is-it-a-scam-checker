@@ -1,14 +1,15 @@
 import { Metadata } from 'next';
+import { ShieldCheck, Lock, UserCheck, Globe } from 'lucide-react';
 
 export const metadata: Metadata = {
-    title: 'About Scam Checker: Our Mission to Help People Avoid Online Fraud',
-    description: 'Learn about Scam Checker, a free tool helping people worldwide identify scam messages, phishing emails, and fraudulent websites.',
+    title: 'About Scam Checker: Built by Cyber Security Professionals',
+    description: 'Learn about Scam Checker\'s mission to democratise cyber defence. Built by security professionals to help you detect fraud instantly.',
     alternates: {
         canonical: 'https://scamchecker.app/about',
     },
     openGraph: {
-        title: 'About Scam Checker: Our Mission to Help People Avoid Online Fraud',
-        description: 'Free tool helping people worldwide identify scam messages, phishing emails, and fraudulent websites.',
+        title: 'About Scam Checker: Built by Cyber Security Professionals',
+        description: 'Mission-driven tool helping people worldwide identify scam messages. Built by security experts.',
         url: 'https://scamchecker.app/about',
     },
 };
@@ -16,42 +17,76 @@ export const metadata: Metadata = {
 export default function AboutPage() {
     return (
         <div className="container mx-auto px-4 py-12 max-w-4xl">
-            <h1 className="text-4xl font-bold mb-8 text-slate-900">About Scam Checker: Our Mission to Help People Avoid Online Fraud</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-slate-900 leading-tight">
+                Democratising Cyber Defence for Everyone
+            </h1>
+            <p className="text-xl text-slate-600 mb-12 max-w-2xl leading-relaxed">
+                Scam Checker provides professional-grade fraud detection without the complexity. We translate technical threat intelligence into clear, actionable advice for everyday users.
+            </p>
 
-            <div className="space-y-6 text-lg text-slate-700">
-                <p>
-                    Scam Checker was built with a simple mission: <strong>to help everyday people spot scams before it&apos;s too late.</strong>
-                </p>
+            <div className="grid md:grid-cols-2 gap-8 mb-16">
+                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
+                        <UserCheck className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <h2 className="text-xl font-bold text-slate-900 mb-3">Who Built This</h2>
+                    <p className="text-slate-600 mb-4">
+                        Scam Checker is developed and maintained by <a href="https://shubhamsingla.tech" className="text-blue-600 hover:underline font-medium">Shubham Singla</a>, a Cyber Security professional and Software Engineer.
+                    </p>
+                    <p className="text-slate-600">
+                        With a background in defensive cybersecurity and secure software development, Shubham built this tool to close the gap between enterprise-grade security tools and consumer protection needs.
+                    </p>
+                </div>
 
-                <p>
-                    In a world where phishing emails, fake text messages, and fraudulent websites are becoming increasingly sophisticated, it&apos;s hard to know who to trust. We wanted to create a fast, free, and privacy-first tool that gives you a second opinion instantly — no sign-up required, no data sold.
-                </p>
+                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <div className="w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center mb-4">
+                        <Lock className="w-6 h-6 text-emerald-600" />
+                    </div>
+                    <h2 className="text-xl font-bold text-slate-900 mb-3">Our Core Philosophy</h2>
+                    <ul className="space-y-3 text-slate-600">
+                        <li className="flex gap-3">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 flex-shrink-0" />
+                            <span><strong>Privacy First:</strong> Analysis happens in your browser. We never store your personal messages or sell your data.</span>
+                        </li>
+                        <li className="flex gap-3">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 flex-shrink-0" />
+                            <span><strong>No Fear-Mongering:</strong> We provide factual risk assessments, not hype.</span>
+                        </li>
+                        <li className="flex gap-3">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-2 flex-shrink-0" />
+                            <span><strong>Radical Accessibility:</strong> Security tools must be free and easy to use to be effective.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-                <h2 className="text-2xl font-semibold mt-8 mb-4 text-slate-900">How We Approach Scam Detection</h2>
+            <h2 className="text-3xl font-bold mb-6 text-slate-900">Why Trust Our Analysis?</h2>
+            <div className="prose prose-slate max-w-none text-slate-700 leading-relaxed mb-12">
                 <p>
-                    We believe in simplicity. You should not need a degree in cybersecurity to know if a message is safe. Our tool looks for the common red flags that scammers use worldwide — like urgency tactics, requests for unusual payment methods, and suspicious links — and translates them into plain language for you.
+                    Automated scam detection is complex. Scammers constantly evolve their tactics to bypass filters. We rely on a multi-layered approach grounded in cybersecurity fundamentals:
                 </p>
+                <ul>
+                    <li><strong>Heuristic Analysis:</strong> Identifying patterns in language that indicate urgency, coercion, or authority impersonation (Social Engineering markers).</li>
+                    <li><strong>Technical Verification:</strong> checking URLs against known malicious patterns, including punycode attacks, subdomain spoofing, and lookalike domains.</li>
+                    <li><strong>Threat Intelligence:</strong> Integrating community reports and known scam database signatures.</li>
+                </ul>
                 <p>
-                    We focus on the scams that target people most frequently: fake delivery notifications, bank impersonation calls, tax authority threats, payment platform overpayment tricks, and family impersonation messages. Our detection patterns are updated regularly to keep pace with evolving tactics.
+                    While no tool is 100% perfect, our approach is designed by security professionals to detect the <em>intent</em> behind a message, not just keyword matching.
                 </p>
+            </div>
 
-                <h2 className="text-2xl font-semibold mt-8 mb-4 text-slate-900">Your Privacy Matters</h2>
-                <p>
-                    When you paste content into the checker, the analysis happens in your browser. We do not store your messages, emails, or personal information. If you choose to report a scam to help others, that data is anonymised before being added to our community database.
+            <div className="bg-slate-900 text-slate-300 rounded-2xl p-8 md:p-12 text-center">
+                <Globe className="w-12 h-12 mx-auto text-blue-400 mb-6" />
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">A Global Defence Against Fraud</h2>
+                <p className="max-w-2xl mx-auto mb-8 text-lg">
+                    Fraud is a global industry. Whether you are in New York, London, Mumbai, or Sydney, the tactics used to steal your money are remarkably similar. We are building a global defence layer that protects users everywhere.
                 </p>
-
-                <h2 className="text-2xl font-semibold mt-8 mb-4 text-slate-900">Who Built This</h2>
-                <p>
-                    Scam Checker is developed and maintained by <a href="https://shubhamsingla.tech" className="text-primary hover:underline">Shubham Singla</a>, a software engineer passionate about using technology for social good. The project is independent and not affiliated with any financial institution or government agency.
-                </p>
-
-                <h2 className="text-2xl font-semibold mt-8 mb-4 text-slate-900">Why Scams Are a Global Problem</h2>
-                <p>
-                    Online fraud does not respect borders. Scammers use the same psychological tactics regardless of where their targets live: urgency, fear, authority, and trust exploitation work on humans everywhere. That is why we built a tool that works for scam patterns used globally, not just in one country.
-                </p>
-                <p>
-                    Whether you receive a suspicious text claiming to be from your bank in London, a fake delivery notification in Sydney, a tax refund email in New York, or a family impersonation message in Mumbai — the underlying patterns are recognisable. Our checker helps you see through the facade.
-                </p>
+                <div className="flex flex-wrap justify-center gap-4 text-sm font-medium text-blue-200">
+                    <span>• Phishing Detection</span>
+                    <span>• Smishing Prevention</span>
+                    <span>• Fraud Awareness</span>
+                    <span>• Digital Safety</span>
+                </div>
             </div>
         </div>
     );
