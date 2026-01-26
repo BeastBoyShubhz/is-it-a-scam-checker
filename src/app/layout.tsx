@@ -9,15 +9,29 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
     title: "Scam Checker – Check if a Message, Email or Link Is a Scam",
-    description: "Scam Checker helps you identify scams by analysing messages, emails and links in seconds. Free, private, and instant.",
-    keywords: ["scam checker", "is this a scam", "check scam message", "scam email check", "is this link safe", "phishing detector"],
+    description: "Scam Checker helps you identify scams by analysing messages, emails and links in seconds. Free, private, and instant. Built for Australians.",
+    keywords: ["scam checker", "is this a scam", "check scam message", "scam email check", "is this link safe", "phishing detector", "Australia scam check"],
     openGraph: {
         type: "website",
         locale: "en_AU",
         url: "https://scamchecker.app",
         title: "Scam Checker – Free Scam Detection Tool",
         description: "Check if a message, email, or link is a scam. Instant analysis to protect yourself from fraud.",
-        siteName: "Scam Checker"
+        siteName: "Scam Checker",
+        images: [
+            {
+                url: "https://scamchecker.app/og-default.png",
+                width: 1200,
+                height: 630,
+                alt: "Scam Checker - Free scam detection for Australia",
+            },
+        ],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Scam Checker – Free Scam Detection Tool",
+        description: "Check if a message, email, or link is a scam. Instant analysis to protect yourself from fraud.",
+        images: ["https://scamchecker.app/og-default.png"],
     },
     metadataBase: new URL('https://scamchecker.app'),
     alternates: {

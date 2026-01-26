@@ -5,13 +5,18 @@ import { Report } from '@prisma/client';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { AlertOctagon, BookOpen, ShieldCheck } from 'lucide-react';
+import { AlertOctagon, BookOpen, ShieldCheck, Users } from 'lucide-react';
 
 export const metadata: Metadata = {
-    title: 'Live Scam Reports | Scam Checker',
-    description: 'Real-time feed of reported scams, phishing attempts, and fraudulent numbers reported by the community.',
+    title: 'Community Scam Reports (Australia) | Scam Checker',
+    description: 'Real-time feed of scams reported by Australians. See active phone numbers, URLs and message patterns. Help others by reporting what you receive.',
     alternates: {
         canonical: 'https://scamchecker.app/reports',
+    },
+    openGraph: {
+        title: 'Community Scam Reports (Australia)',
+        description: 'Real-time feed of scams reported by Australians. See active numbers, URLs and patterns.',
+        url: 'https://scamchecker.app/reports',
     },
 };
 
@@ -58,17 +63,42 @@ export default async function ReportsPage() {
                         <div>
                             <h1 className="text-3xl font-bold text-slate-900 flex items-center gap-2">
                                 <AlertOctagon className="w-8 h-8 text-red-600" />
-                                Community Reports
+                                Community Scam Reports (Australia)
                             </h1>
                             <p className="text-slate-600 mt-2">
-                                Recent scam activity reported by users. Use this to check if a number or link is active.
+                                Real-time feed of scams reported by other Australians. Check if a number or link has been flagged.
                             </p>
                         </div>
                         <Button asChild variant="default" className="bg-red-600 hover:bg-red-700">
-                            <Link href="/check">Report a Scam</Link>
+                            <Link href="/check">Report a Suspicious Message</Link>
                         </Button>
                     </div>
                 </div>
+
+                {/* Why Community Reports Matter */}
+                <section className="bg-white p-6 rounded-xl border border-slate-200 mb-8">
+                    <div className="flex items-center gap-3 mb-4">
+                        <Users className="w-6 h-6 text-primary" />
+                        <h2 className="text-xl font-bold text-slate-900">Why Community Reports Matter</h2>
+                    </div>
+                    <p className="text-slate-600 mb-4">
+                        Scammers change phone numbers and URLs frequently to avoid detection. By sharing what you receive, you help others recognise active scam campaigns before they fall victim. These reports are anonymous and community-sourced.
+                    </p>
+                    <p className="text-slate-600">
+                        If you spot a number or link you&apos;ve received, treat it with extra caution. If you&apos;ve received something suspicious that isn&apos;t listed here, use our <Link href="/check" className="text-primary hover:underline">scam checker tool</Link> to analyse it and add to our database.
+                    </p>
+                </section>
+
+                {/* How to Use This Data */}
+                <section className="bg-white p-6 rounded-xl border border-slate-200 mb-8">
+                    <h2 className="text-xl font-bold text-slate-900 mb-4">How to Use This Data</h2>
+                    <ul className="text-slate-600 space-y-2">
+                        <li>• <strong>Check incoming calls:</strong> Received a call from an unknown number? Search this list to see if others have reported it.</li>
+                        <li>• <strong>Verify suspicious links:</strong> Before clicking a URL in a text, check here to see if it&apos;s been reported as malicious.</li>
+                        <li>• <strong>Report what you receive:</strong> If you get a scam attempt, use our <Link href="/check" className="text-primary hover:underline">checker</Link> to analyse and report it.</li>
+                        <li>• <strong>Stay informed:</strong> Browse recent reports to understand what scam patterns are active right now in Australia.</li>
+                    </ul>
+                </section>
 
                 {/* Cross-linking CTAs */}
                 <div className="grid md:grid-cols-2 gap-4 mb-8">
@@ -76,7 +106,7 @@ export default async function ReportsPage() {
                         <ShieldCheck className="w-10 h-10 text-primary flex-shrink-0" />
                         <div className="flex-1">
                             <h3 className="font-semibold text-slate-900 mb-1">Got a suspicious message?</h3>
-                            <p className="text-sm text-slate-600 mb-3">Paste it in the checker for an instant verdict.</p>
+                            <p className="text-sm text-slate-600 mb-3">Paste it in the checker for an instant risk assessment.</p>
                             <Button asChild size="sm" variant="default">
                                 <Link href="/check">Use the Scam Checker</Link>
                             </Button>
@@ -86,7 +116,7 @@ export default async function ReportsPage() {
                         <BookOpen className="w-10 h-10 text-amber-500 flex-shrink-0" />
                         <div className="flex-1">
                             <h3 className="font-semibold text-slate-900 mb-1">Learn to spot scams</h3>
-                            <p className="text-sm text-slate-600 mb-3">Read our guides on the latest scam tactics.</p>
+                            <p className="text-sm text-slate-600 mb-3">Read our guides with real examples and advice.</p>
                             <Button asChild size="sm" variant="outline">
                                 <Link href="/guides">Read Scam Guides</Link>
                             </Button>
@@ -94,13 +124,15 @@ export default async function ReportsPage() {
                     </div>
                 </div>
 
+                {/* Recent Reports */}
+                <h2 className="text-xl font-bold text-slate-900 mb-4">Recent Reports</h2>
                 {error ? (
                     <div className="p-12 text-center bg-white rounded-lg border border-dashed text-slate-500">
                         Database connection is currently unavailable. Please check back later.
                     </div>
                 ) : reports.length === 0 ? (
                     <div className="p-12 text-center bg-white rounded-lg border border-dashed text-slate-500">
-                        No reports found yet. Be the first to report a scam!
+                        No reports found yet. Be the first to <Link href="/check" className="text-primary hover:underline">report a scam</Link>!
                     </div>
                 ) : (
                     <div className="space-y-4">

@@ -1,4 +1,3 @@
-
 import { Metadata } from 'next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -6,17 +5,24 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
-    title: 'Contact Us | Is It a Scam?',
-    description: 'Get in touch with the Is It a Scam? team.',
+    title: 'Contact the Scam Checker Team | Feedback & Support',
+    description: 'Get in touch with the Scam Checker team. Report issues, suggest improvements, or ask questions about our scam detection tool.',
+    alternates: {
+        canonical: 'https://scamchecker.app/contact',
+    },
+    openGraph: {
+        title: 'Contact the Scam Checker Team',
+        description: 'Get in touch with the Scam Checker team for feedback, bug reports, or questions.',
+        url: 'https://scamchecker.app/contact',
+    },
 };
 
 export default function ContactPage() {
     return (
         <div className="container mx-auto px-4 py-12 max-w-2xl">
-            <h1 className="text-4xl font-bold mb-8 text-slate-900 text-center">Contact Us</h1>
-
-            <p className="text-center text-slate-600 mb-8">
-                Have suggestions, questions, or want to report a bug? We'd love to hear from you.
+            <h1 className="text-4xl font-bold mb-4 text-slate-900 text-center">Contact the Scam Checker Team</h1>
+            <p className="text-xl text-slate-600 text-center mb-8">
+                Have feedback, found a bug, or want to suggest an improvement? We&apos;d love to hear from you.
             </p>
 
             <Card>

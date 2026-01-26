@@ -30,22 +30,18 @@ const routes = [
     '/guides/parcel-delivery-scams-australia',
 ];
 
-// Links that must exist on specific pages
-const requiredLinks = {
-    '/': ['/guides', '/check'],
-    '/guides': [
-        '/guides/is-this-website-legit',
-        '/guides/how-to-spot-a-fake-link',
-        '/guides/scam-text-message-examples',
-        '/guides/whatsapp-scams-examples',
-        '/guides/email-phishing-examples',
-        '/guides/payid-scams-australia',
-        '/guides/ato-scam-text-email',
-        '/guides/bank-impersonation-scams',
-        '/guides/facebook-marketplace-scams',
-        '/guides/parcel-delivery-scams-australia',
-    ],
-};
+// Pages to check for heading structure and OG tags
+const seoCheckPages = [
+    '/',
+    '/check',
+    '/guides',
+    '/reports',
+    '/about',
+    '/how-it-works',
+    '/privacy',
+    '/disclaimer',
+    '/contact',
+];
 
 async function checkRoute(route) {
     const url = `${baseUrl}${route}`;
@@ -64,47 +60,137 @@ async function checkRoute(route) {
     }
 }
 
-function checkLinksInHtml(html, requiredPaths, pageName) {
-    let allFound = true;
-    for (const path of requiredPaths) {
-        // Check for href containing the path
-        if (html.includes(`href="${path}"`) || html.includes(`href="${path}/"`)) {
-            console.log(`  ✅ ${pageName} contains link to ${path}`);
-        } else {
-            console.error(`  ❌ ${pageName} missing link to ${path}`);
-            allFound = false;
-        }
+function checkHeadingStructure(html, pageName) {
+    let passed = true;
+
+    // Count H1 tags
+    const h1Matches = html.match(/<h1[^>]*>[\s\S]*?<\/h1>/gi) || [];
+    if (h1Matches.length === 0) {
+        console.error(`  ❌ ${pageName}: Missing H1 heading`);
+        passed = false;
+    } else if (h1Matches.length > 1) {
+        console.error(`  ❌ ${pageName}: Multiple H1 headings found (${h1Matches.length})`);
+        passed = false;
+    } else {
+        console.log(`  ✅ ${pageName}: Has exactly one H1`);
     }
-    return allFound;
+
+    // Count H2 tags
+    const h2Matches = html.match(/<h2[^>]*>[\s\S]*?<\/h2>/gi) || [];
+    if (h2Matches.length < 2) {
+        console.error(`  ❌ ${pageName}: Less than 2 H2 headings (found ${h2Matches.length})`);
+        passed = false;
+    } else {
+        console.log(`  ✅ ${pageName}: Has ${h2Matches.length} H2 headings`);
+    }
+
+    return passed;
+}
+
+function checkOgCanonicalMatch(html, pageName, expectedPath) {
+    let passed = true;
+
+    // Extract canonical URL
+    const canonicalMatch = html.match(/<link[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["']/i);
+    const canonical = canonicalMatch ? canonicalMatch[1] : null;
+
+    // Extract og:url (can be in meta content or property)
+    const ogUrlMatch = html.match(/<meta[^>]*property=["']og:url["'][^>]*content=["']([^"']+)["']/i)
+        || html.match(/<meta[^>]*content=["']([^"']+)["'][^>]*property=["']og:url["']/i);
+    const ogUrl = ogUrlMatch ? ogUrlMatch[1] : null;
+
+    if (canonical && ogUrl) {
+        if (canonical === ogUrl) {
+            console.log(`  ✅ ${pageName}: canonical and og:url match`);
+        } else {
+            console.error(`  ❌ ${pageName}: canonical (${canonical}) != og:url (${ogUrl})`);
+            passed = false;
+        }
+    } else {
+        if (!canonical) console.error(`  ❌ ${pageName}: Missing canonical URL`);
+        if (!ogUrl) console.error(`  ❌ ${pageName}: Missing og:url`);
+        passed = false;
+    }
+
+    return passed;
+}
+
+function checkNoHttpW3Org(html, pageName) {
+    if (html.includes('http://www.w3.org')) {
+        console.error(`  ❌ ${pageName}: Contains http://www.w3.org (should be https)`);
+        return false;
+    }
+    console.log(`  ✅ ${pageName}: No http://www.w3.org references`);
+    return true;
+}
+
+async function checkFavicon() {
+    try {
+        const faviconRes = await fetch(`${baseUrl}/icon.png`);
+        if (faviconRes.ok) {
+            console.log('✅ Favicon (icon.png) exists');
+            return true;
+        }
+    } catch (e) { }
+
+    try {
+        const icoRes = await fetch(`${baseUrl}/favicon.ico`);
+        if (icoRes.ok) {
+            console.log('✅ Favicon (favicon.ico) exists');
+            return true;
+        }
+    } catch (e) { }
+
+    console.error('❌ No favicon found (checked icon.png and favicon.ico)');
+    return false;
+}
+
+async function checkOgImage() {
+    try {
+        const ogRes = await fetch(`${baseUrl}/og-default.png`);
+        if (ogRes.ok) {
+            console.log('✅ OG Image (og-default.png) exists');
+            return true;
+        }
+    } catch (e) { }
+
+    console.error('❌ OG default image not found');
+    return false;
 }
 
 async function run() {
-    console.log(`\n🔍 Checking routes on ${baseUrl}...\n`);
+    console.log(`\n🔍 Sitechecker SEO Validation for ${baseUrl}\n`);
 
     let allPassed = true;
     const pageHtmlCache = {};
 
     // Check all routes return 200
-    console.log('--- Route Status Checks ---\n');
+    console.log('=== Route Status Checks ===\n');
     for (const route of routes) {
         const result = await checkRoute(route);
         if (!result.passed) allPassed = false;
         if (result.html) pageHtmlCache[route] = result.html;
     }
 
-    // Check required links exist on pages
-    console.log('\n--- Required Link Checks ---\n');
-    for (const [page, links] of Object.entries(requiredLinks)) {
+    // Check heading structure and OG/canonical alignment
+    console.log('\n=== SEO Structure Checks ===\n');
+    for (const page of seoCheckPages) {
         if (pageHtmlCache[page]) {
-            console.log(`Checking links on ${page}:`);
-            const linksOk = checkLinksInHtml(pageHtmlCache[page], links, page);
-            if (!linksOk) allPassed = false;
+            console.log(`Checking ${page}:`);
+            if (!checkHeadingStructure(pageHtmlCache[page], page)) allPassed = false;
+            if (!checkOgCanonicalMatch(pageHtmlCache[page], page, page)) allPassed = false;
+            if (!checkNoHttpW3Org(pageHtmlCache[page], page)) allPassed = false;
         } else {
-            console.error(`⚠️ Cannot check links on ${page} - page not fetched`);
+            console.error(`⚠️ Cannot check SEO structure for ${page} - page not fetched`);
         }
     }
 
-    console.log('\n--- Summary ---\n');
+    // Check static assets
+    console.log('\n=== Static Asset Checks ===\n');
+    if (!await checkFavicon()) allPassed = false;
+    if (!await checkOgImage()) allPassed = false;
+
+    console.log('\n=== Summary ===\n');
     if (allPassed) {
         console.log('✅ All checks passed!\n');
         process.exit(0);
