@@ -1,9 +1,21 @@
+'use client';
 
 import Link from 'next/link';
-import { ShieldAlert } from 'lucide-react';
+import { ShieldAlert, Menu, X } from 'lucide-react';
 import { Button } from './ui/button';
+import { useState } from 'react';
 
 export function Header() {
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+    const navLinks = [
+        { href: '/check', label: 'Check' },
+        { href: '/guides', label: 'Guides' },
+        { href: '/reports', label: 'Community Reports' },
+        { href: '/how-it-works', label: 'How it Works' },
+        { href: '/about', label: 'About' },
+    ];
+
     return (
         <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -11,16 +23,55 @@ export function Header() {
                     <ShieldAlert className="w-6 h-6" />
                     <span>Scam Checker</span>
                 </Link>
+
+                {/* Desktop Navigation */}
                 <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-                    <Link href="/how-it-works" className="hover:text-primary transition-colors">How it Works</Link>
-                    <Link href="/guides" className="hover:text-primary transition-colors">Guides</Link>
-                    <Link href="/reports" className="hover:text-primary transition-colors">Reports</Link>
-                    <Link href="/about" className="hover:text-primary transition-colors">About</Link>
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.href}
+                            href={link.href}
+                            className="hover:text-primary transition-colors"
+                        >
+                            {link.label}
+                        </Link>
+                    ))}
                     <Button asChild variant="default" size="sm">
                         <Link href="/check">Check for Free</Link>
                     </Button>
                 </nav>
+
+                {/* Mobile Menu Button */}
+                <button
+                    className="md:hidden p-2 text-slate-600 hover:text-slate-900"
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+                >
+                    {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                </button>
             </div>
+
+            {/* Mobile Navigation */}
+            {mobileMenuOpen && (
+                <nav className="md:hidden border-t bg-white">
+                    <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className="text-slate-700 hover:text-primary transition-colors py-2"
+                                onClick={() => setMobileMenuOpen(false)}
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
+                        <Button asChild variant="default" className="w-full mt-2">
+                            <Link href="/check" onClick={() => setMobileMenuOpen(false)}>
+                                Check for Free
+                            </Link>
+                        </Button>
+                    </div>
+                </nav>
+            )}
         </header>
     );
 }

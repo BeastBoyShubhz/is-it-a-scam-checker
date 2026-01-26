@@ -5,11 +5,14 @@ import { Report } from '@prisma/client';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { AlertOctagon } from 'lucide-react';
+import { AlertOctagon, BookOpen, ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
-    title: 'Live Scam Reports | Is It a Scam?',
+    title: 'Live Scam Reports | Scam Checker',
     description: 'Real-time feed of reported scams, phishing attempts, and fraudulent numbers reported by the community.',
+    alternates: {
+        canonical: 'https://scamchecker.app/reports',
+    },
 };
 
 export const dynamic = 'force-dynamic';
@@ -49,7 +52,7 @@ export default async function ReportsPage() {
         <div className="min-h-screen bg-slate-50">
             <div className="container mx-auto px-4 py-12 max-w-4xl">
                 <div className="mb-8">
-                    <Link href="/" className="text-sm text-slate-500 hover:text-slate-900 transition-colors mb-4 inline-block">&larr; Back to Checker</Link>
+                    <Link href="/" className="text-sm text-slate-500 hover:text-slate-900 transition-colors mb-4 inline-block">&larr; Back to Home</Link>
 
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div>
@@ -62,8 +65,32 @@ export default async function ReportsPage() {
                             </p>
                         </div>
                         <Button asChild variant="default" className="bg-red-600 hover:bg-red-700">
-                            <Link href="/#checker">Report a Scam</Link>
+                            <Link href="/check">Report a Scam</Link>
                         </Button>
+                    </div>
+                </div>
+
+                {/* Cross-linking CTAs */}
+                <div className="grid md:grid-cols-2 gap-4 mb-8">
+                    <div className="bg-white border border-slate-200 rounded-xl p-5 flex items-center gap-4">
+                        <ShieldCheck className="w-10 h-10 text-primary flex-shrink-0" />
+                        <div className="flex-1">
+                            <h3 className="font-semibold text-slate-900 mb-1">Got a suspicious message?</h3>
+                            <p className="text-sm text-slate-600 mb-3">Paste it in the checker for an instant verdict.</p>
+                            <Button asChild size="sm" variant="default">
+                                <Link href="/check">Use the Scam Checker</Link>
+                            </Button>
+                        </div>
+                    </div>
+                    <div className="bg-white border border-slate-200 rounded-xl p-5 flex items-center gap-4">
+                        <BookOpen className="w-10 h-10 text-amber-500 flex-shrink-0" />
+                        <div className="flex-1">
+                            <h3 className="font-semibold text-slate-900 mb-1">Learn to spot scams</h3>
+                            <p className="text-sm text-slate-600 mb-3">Read our guides on the latest scam tactics.</p>
+                            <Button asChild size="sm" variant="outline">
+                                <Link href="/guides">Read Scam Guides</Link>
+                            </Button>
+                        </div>
                     </div>
                 </div>
 
@@ -98,7 +125,7 @@ export default async function ReportsPage() {
                                             </div>
                                             {r.notes && (
                                                 <p className="text-sm text-slate-600 italic border-l-2 border-slate-200 pl-3">
-                                                    "{r.notes}"
+                                                    &quot;{r.notes}&quot;
                                                 </p>
                                             )}
                                         </div>
