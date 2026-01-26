@@ -116,11 +116,23 @@ function checkOgCanonicalMatch(html, pageName, expectedPath) {
 }
 
 function checkNoHttpW3Org(html, pageName) {
-    if (html.includes('http://www.w3.org')) {
-        console.error(`  ❌ ${pageName}: Contains http://www.w3.org (should be https)`);
+    // Remove all standard W3C namespace URLs (SVG, XHTML, MathML, XLink)
+    // We treat them as strings to remove, regardless of context (attributes, JSON, etc)
+    const cleanHtml = html
+        .replace(/http:\/\/www\.w3\.org\/2000\/svg/g, '')
+        .replace(/http:\/\/www\.w3\.org\/1999\/xhtml/g, '')
+        .replace(/http:\/\/www\.w3\.org\/1998\/Math\/MathML/g, '')
+        .replace(/http:\/\/www\.w3\.org\/1999\/xlink/g, '');
+
+    if (cleanHtml.includes('http://www.w3.org')) {
+        console.error(`  ❌ ${pageName}: Contains suspicious http://www.w3.org (should be https)`);
+        // Debugging: Print a snippet around the match
+        const index = cleanHtml.indexOf('http://www.w3.org');
+        const snippet = cleanHtml.substring(Math.max(0, index - 50), Math.min(cleanHtml.length, index + 50));
+        console.log(`     Context: ...${snippet}...`);
         return false;
     }
-    console.log(`  ✅ ${pageName}: No http://www.w3.org references`);
+    console.log(`  ✅ ${pageName}: No suspicious http://www.w3.org references`);
     return true;
 }
 

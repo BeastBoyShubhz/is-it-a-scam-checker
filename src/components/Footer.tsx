@@ -9,21 +9,21 @@ export function Footer() {
                     <div className="md:col-span-2">
                         <h3 className="text-white font-bold text-lg mb-4">Scam Checker</h3>
                         <p className="text-sm mb-4">
-                            Free tool to check if a website, email, or message is safe. We use pattern recognition to help potential victims identify scams before it&apos;s too late.
+                            Free tool to check if a website, email, or message is safe. We use pattern recognition to help people identify scams before they become victims.
                         </p>
                         <p className="text-sm font-medium text-emerald-400">
-                            Free, privacy-first scam checks. No sign-up.
+                            Free, private scam checks. No sign-up required.
                         </p>
                     </div>
                     <div>
                         <h3 className="text-white font-bold text-lg mb-4">Quick Links</h3>
                         <ul className="space-y-2 text-sm">
-                            <li><Link href="/check" className="hover:text-white font-medium">Check a Scam</Link></li>
-                            <li><Link href="/guides" className="hover:text-white">Scam Guides</Link></li>
-                            <li><Link href="/reports" className="hover:text-white">Community Reports</Link></li>
-                            <li><Link href="/how-it-works" className="hover:text-white">How it Works</Link></li>
-                            <li><Link href="/about" className="hover:text-white">About Us</Link></li>
-                            <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
+                            <li><Link href="/check" className="hover:text-white font-medium">Check a suspicious message or link</Link></li>
+                            <li><Link href="/guides" className="hover:text-white">Browse scam identification guides</Link></li>
+                            <li><Link href="/reports" className="hover:text-white">View community scam reports</Link></li>
+                            <li><Link href="/how-it-works" className="hover:text-white">How our detection works</Link></li>
+                            <li><Link href="/about" className="hover:text-white">About this project</Link></li>
+                            <li><Link href="/contact" className="hover:text-white">Contact us</Link></li>
                         </ul>
                     </div>
                     <div>

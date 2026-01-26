@@ -199,9 +199,9 @@ export const guides: Guide[] = [
   },
   {
     slug: 'scam-text-message-examples',
-    title: 'Scam Text Message Examples Australia',
-    excerpt: 'Real SMS scam templates: parcel delivery, bank alerts, and urgency tactics.',
-    metaDescription: 'See real examples of scam text messages in Australia. Learn to recognise parcel delivery scams, fake bank alerts, and urgent SMS fraud attempts.',
+    title: 'Scam Text Message Examples: SMS Fraud Patterns Explained',
+    excerpt: 'Real SMS scam templates: parcel delivery, bank alerts, and urgency tactics used worldwide.',
+    metaDescription: 'See real examples of scam text messages. Learn to recognise parcel delivery scams, fake bank alerts, and urgent SMS fraud attempts.',
     date: '2026-01-26',
     relatedSlugs: ['parcel-delivery-scams-australia', 'bank-impersonation-scams', 'how-to-spot-a-fake-link'],
     content: `
@@ -298,9 +298,9 @@ export const guides: Guide[] = [
   },
   {
     slug: 'whatsapp-scams-examples',
-    title: 'WhatsApp Scam Examples: How to Spot Them',
-    excerpt: '"Hi Mum/Dad" scams, crypto investment groups, and impersonation tactics.',
-    metaDescription: 'Identify WhatsApp scams targeting Australians. Learn about Hi Mum scams, fake investment groups, and impersonation tactics used by fraudsters.',
+    title: 'WhatsApp and Messaging App Scams: How to Recognise Fraud',
+    excerpt: 'Family impersonation scams, crypto investment groups, and messaging fraud tactics.',
+    metaDescription: 'Identify WhatsApp and messaging app scams. Learn about family impersonation scams, fake investment groups, and fraud tactics.',
     date: '2026-01-26',
     relatedSlugs: ['scam-text-message-examples', 'bank-impersonation-scams', 'facebook-marketplace-scams'],
     content: `
@@ -473,9 +473,9 @@ export const guides: Guide[] = [
   },
   {
     slug: 'payid-scams-australia',
-    title: 'PayID Scams in Australia: The Overpayment Trap',
-    excerpt: 'How scammers exploit PayID with fake overpayments and business upgrade tricks.',
-    metaDescription: 'Learn how PayID scams work in Australia. Understand the overpayment trick, fake business account upgrades, and how to protect yourself when selling online.',
+    title: 'Payment Platform Scams: Overpayment Fraud on PayID, Zelle and Similar Services',
+    excerpt: 'How scammers exploit instant payment platforms with fake overpayments and upgrade tricks.',
+    metaDescription: 'Learn how payment platform scams work. Understand overpayment tricks, fake business account upgrades, and how to protect yourself when selling online.',
     date: '2026-01-26',
     relatedSlugs: ['facebook-marketplace-scams', 'bank-impersonation-scams', 'scam-text-message-examples'],
     content: `
@@ -567,9 +567,9 @@ export const guides: Guide[] = [
   },
   {
     slug: 'ato-scam-text-email',
-    title: 'ATO Scam Text & Email: Warning Signs',
-    excerpt: 'Tax refund scams, fake debt notices, and myGov impersonation tactics.',
-    metaDescription: 'Recognise ATO and myGov scams in Australia. Learn the warning signs of fake tax refund emails, debt threat calls, and how to verify legitimate ATO contact.',
+    title: 'Tax Authority Impersonation Scams: Fake Refunds and Debt Threats',
+    excerpt: 'Tax refund scams, fake debt notices, and government portal impersonation tactics.',
+    metaDescription: 'Recognise tax authority impersonation scams worldwide. Learn the warning signs of fake tax refund emails, debt threat calls, and how to verify legitimate contact.',
     date: '2026-01-26',
     relatedSlugs: ['scam-text-message-examples', 'email-phishing-examples', 'bank-impersonation-scams'],
     content: `
@@ -663,9 +663,9 @@ export const guides: Guide[] = [
   },
   {
     slug: 'bank-impersonation-scams',
-    title: 'Bank Impersonation Scams Australia',
-    excerpt: 'Fake NAB, CommBank, and Westpac calls, texts, and spoofed caller IDs.',
-    metaDescription: 'Protect yourself from bank impersonation scams in Australia. Learn how scammers spoof bank caller IDs and trick you into moving your money.',
+    title: 'Bank Impersonation Scams: How Fraudsters Pose as Financial Institutions',
+    excerpt: 'Fake bank calls, texts, and spoofed caller IDs explained.',
+    metaDescription: 'Protect yourself from bank impersonation scams. Learn how scammers spoof bank caller IDs and trick you into moving your money.',
     date: '2026-01-26',
     relatedSlugs: ['scam-text-message-examples', 'ato-scam-text-email', 'how-to-spot-a-fake-link'],
     content: `
@@ -751,9 +751,9 @@ export const guides: Guide[] = [
   },
   {
     slug: 'facebook-marketplace-scams',
-    title: 'Facebook Marketplace Scams to Watch For',
-    excerpt: 'Fake payment emails, courier pickup scams, and PayPal "pending" tricks.',
-    metaDescription: 'Avoid Facebook Marketplace scams in Australia. Learn about fake payment confirmations, courier pickup scams, and how to sell safely online.',
+    title: 'Marketplace Scams: Fraud on Facebook, eBay and Classified Sites',
+    excerpt: 'Fake payment emails, courier pickup scams, and payment platform pending tricks.',
+    metaDescription: 'Avoid online marketplace scams. Learn about fake payment confirmations, courier pickup scams, and how to sell safely online.',
     date: '2026-01-26',
     relatedSlugs: ['payid-scams-australia', 'email-phishing-examples', 'is-this-website-legit'],
     content: `
@@ -839,9 +839,9 @@ export const guides: Guide[] = [
   },
   {
     slug: 'parcel-delivery-scams-australia',
-    title: 'Parcel Delivery Scams Australia',
-    excerpt: 'AusPost, DHL, and FedEx SMS scams with fake tracking links and card fee traps.',
-    metaDescription: 'Spot fake parcel delivery scams in Australia. Learn to identify scam AusPost, DHL, and FedEx texts with fake tracking links and redelivery fee traps.',
+    title: 'Parcel Delivery Scams: Fake Tracking Links and Fee Traps',
+    excerpt: 'DHL, FedEx, UPS and postal service SMS scams with fake tracking links and card fee traps.',
+    metaDescription: 'Spot fake parcel delivery scams. Learn to identify scam texts from carriers with fake tracking links and redelivery fee traps.',
     date: '2026-01-26',
     relatedSlugs: ['scam-text-message-examples', 'how-to-spot-a-fake-link', 'email-phishing-examples'],
     content: `
