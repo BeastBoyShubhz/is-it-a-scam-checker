@@ -25,6 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/check-scam-email',
         '/check-scam-link',
         '/check',
+        '/have-i-been-scammed',
         '/reports',
     ].map((route) => ({
         url: `${baseUrl}${route}`,

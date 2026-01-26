@@ -10,6 +10,7 @@ export function Header() {
 
     const navLinks = [
         { href: '/check', label: 'Check for Scams' },
+        { href: '/have-i-been-scammed', label: 'Have I Been Scammed?', className: 'text-red-600 font-bold hover:text-red-700' },
         { href: '/guides', label: 'Scam Guides' },
         { href: '/reports', label: 'Community Reports' },
         { href: '/how-it-works', label: 'How it Works' },
@@ -30,7 +31,7 @@ export function Header() {
                         <Link
                             key={link.href}
                             href={link.href}
-                            className="hover:text-primary transition-colors"
+                            className={link.className || "hover:text-primary transition-colors"}
                         >
                             {link.label}
                         </Link>
@@ -58,7 +59,7 @@ export function Header() {
                             <Link
                                 key={link.href}
                                 href={link.href}
-                                className="text-slate-700 hover:text-primary transition-colors py-2"
+                                className={`${link.className || "text-slate-700 hover:text-primary"} transition-colors py-2`}
                                 onClick={() => setMobileMenuOpen(false)}
                             >
                                 {link.label}

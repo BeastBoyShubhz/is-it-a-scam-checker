@@ -19,6 +19,7 @@ export function Footer() {
                         <h3 className="text-white font-bold text-lg mb-4">Quick Links</h3>
                         <ul className="space-y-2 text-sm">
                             <li><Link href="/check" className="hover:text-white font-medium">Check a suspicious message or link</Link></li>
+                            <li><Link href="/have-i-been-scammed" className="text-red-400 font-bold hover:text-red-300">Have I Been Scammed? (Damage Control)</Link></li>
                             <li><Link href="/guides" className="hover:text-white">Browse scam identification guides</Link></li>
                             <li><Link href="/reports" className="hover:text-white">View community scam reports</Link></li>
                             <li><Link href="/how-it-works" className="hover:text-white">How our detection works</Link></li>

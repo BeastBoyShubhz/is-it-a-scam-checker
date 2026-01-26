@@ -16,6 +16,7 @@ const routes = [
     '/check-scam-text',
     '/check-scam-email',
     '/check-scam-link',
+    '/have-i-been-scammed',
 
     // All 10 guide pages
     '/guides/is-this-website-legit',
@@ -28,6 +29,7 @@ const routes = [
     '/guides/bank-impersonation-scams',
     '/guides/facebook-marketplace-scams',
     '/guides/parcel-delivery-scams-australia',
+    '/guides/what-to-do-if-youve-been-scammed',
 ];
 
 // Pages to check for heading structure and OG tags
@@ -41,6 +43,8 @@ const seoCheckPages = [
     '/privacy',
     '/disclaimer',
     '/contact',
+    '/have-i-been-scammed',
+    '/guides/what-to-do-if-youve-been-scammed',
 ];
 
 async function checkRoute(route) {

@@ -83,6 +83,33 @@ export default function Home() {
             {/* Trust Section */}
             <TrustSection />
 
+            {/* Have I Been Scammed CTA */}
+            <section className="py-12 bg-red-50 border-y border-red-100">
+                <div className="container mx-auto px-4 text-center">
+                    <h2 className="text-2xl md:text-3xl font-bold text-red-900 mb-4">
+                        Think you might have already been scammed?
+                    </h2>
+                    <p className="text-lg text-red-800 mb-8 max-w-2xl mx-auto">
+                        If you already clicked a link, replied to a message, or sent money, checking the message now won't help. You need a damage control plan.
+                    </p>
+                    <div className="flex flex-col sm:flex-row justify-center gap-4">
+                        <Button asChild size="lg" className="bg-red-600 hover:bg-red-700 text-white border-0">
+                            <Link href="/have-i-been-scammed">
+                                Help! I Think I Got Scammed
+                            </Link>
+                        </Button>
+                        <Button asChild variant="outline" size="lg" className="bg-white hover:bg-red-50 text-red-900 border-red-200">
+                            <Link href="/guides/what-to-do-if-youve-been-scammed">
+                                Read Recovery Guide
+                            </Link>
+                        </Button>
+                    </div>
+                    <div className="mt-6 text-sm text-red-700/80">
+                        Common issues: <strong>"I clicked a fake link"</strong>, <strong>"I sent gift cards"</strong>, <strong>"I shared my password"</strong>
+                    </div>
+                </div>
+            </section>
+
             {/* How Our Scam Detection Works */}
             <section className="py-16 bg-white border-t border-slate-100">
                 <div className="container mx-auto px-4 max-w-4xl">

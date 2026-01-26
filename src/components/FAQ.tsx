@@ -23,6 +23,18 @@ export function FAQ() {
             answer: "Yes, clicking a malicious link can lead to phishing sites designed to steal passwords or banking details, or install malware on your device."
         },
         {
+            question: "I accidentally clicked a scam link, what should I do?",
+            answer: "Don't panic. If you didn't enter any information, you are likely safe. Disconnect from the internet, run a virus scan, and watch out for follow-up scam messages. If you entered passwords, change them immediately."
+        },
+        {
+            question: "I sent money to a scammer, can I get it back?",
+            answer: "Contact your bank immediately. If you paid by credit card, you may be able to chargeback. Bank transfers are harder but sometimes recallable if acted on fast. Never pay 'recovery agents' who claim they can hack the money back."
+        },
+        {
+            question: "I replied to a scam message, am I in danger?",
+            answer: "Replying confirms your number works, so you will likely receive more spam. Do not reply further. Block the number. If you didn't share personal info, you are physically safe."
+        },
+        {
             question: "Is Scam Checker free to use?",
             answer: "Yes, Scam Checker is 100% free, private, and secure to help protect you from online fraud."
         }

@@ -110,14 +110,24 @@ export default function CheckPage() {
                 </div>
             </section>
 
-            {/* What to Do If You Already Interacted */}
+            {/* Already Clicked the Link or Responded to the Message? */}
             <section className="py-12 bg-white border-t border-slate-100">
                 <div className="container mx-auto px-4 max-w-4xl">
-                    <h2 className="text-2xl font-bold mb-6 text-slate-900">Already Clicked the Link or Responded to the Message?</h2>
+                    <h2 className="text-2xl font-bold mb-6 text-slate-900">Already Clicked or Responded?</h2>
                     <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-                        <p className="text-slate-700 mb-4">
-                            If you have already engaged with a suspicious message, take these steps immediately:
+                        <h3 className="text-xl font-bold text-red-800 mb-2">Not sure if it already happened?</h3>
+                        <p className="text-slate-700 mb-6">
+                            If you are thinking "<strong>I clicked a scam link</strong>" or "<strong>I gave my details to a scammer</strong>", do not panic. We have a dedicated tool to help you assess the damage and take control.
                         </p>
+                        <div className="flex flex-wrap gap-4 mb-6">
+                            <Link
+                                href="/have-i-been-scammed"
+                                className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg font-bold hover:bg-red-700 transition-colors"
+                            >
+                                Have I Been Scammed? Start Assessment
+                            </Link>
+                        </div>
+                        <p className="text-slate-700 mb-4 font-semibold">Immediate steps if you already acted:</p>
                         <ul className="text-slate-700 space-y-3 mb-4">
                             <li><strong>Entered credentials on a fake site?</strong> Change that password immediately on the real website. Enable two-factor authentication if available. Use a unique password for each account.</li>
                             <li><strong>Provided payment card details?</strong> Contact your bank or card issuer immediately. Request a new card number. Monitor statements for unauthorised charges.</li>

@@ -941,6 +941,80 @@ export const guides: Guide[] = [
   </details>
 </div>
     `
+  },
+  {
+    slug: 'what-to-do-if-youve-been-scammed',
+    title: "I Think I've Been Scammed — Now What? Immediate Recovery Steps",
+    excerpt: 'Step-by-step recovery guide if you clicked a link, sent money, or shared personal details.',
+    metaDescription: 'Panic-free guide on what to do if you have been scammed. Steps to recover money, secure accounts, and report fraud immediately.',
+    date: '2026-01-27',
+    relatedSlugs: ['bank-impersonation-scams', 'scam-text-message-examples', 'how-to-spot-a-fake-link'],
+    content: `
+<div class="bg-red-50 border border-red-200 rounded-xl p-6 mb-8">
+  <p class="font-bold text-lg text-red-900 mb-2">Use Our Recovery Tool</p>
+  <p class="text-red-800 mb-4">If you are panicking, use our interactive assessment to get a personalised action plan in 30 seconds.</p>
+  <a href="/have-i-been-scammed" class="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700">Start Assessment →</a>
+</div>
+
+<p>Realising you may have been scammed is a horrible feeling. Your heart races, you feel sick, and you just want to fix it. First: <strong>breathe</strong>. You are not stupid, and you are not alone. Scams are designed to trick human brains, and they work on doctors, lawyers, and tech experts every single day.</p>
+
+<p>The most important thing right now is speed. What you do in the next hour matters more than what you do next week.</p>
+
+<h2>Step 1: Identify What Was Compromised</h2>
+<p>Different scams require different fixes. Determine which bucket you fall into:</p>
+<ul>
+  <li><strong>I clicked a link</strong> but didn't enter details.</li>
+  <li><strong>I shared personal info</strong> (name, address, date of birth, phone).</li>
+  <li><strong>I shared credentials</strong> (passwords, usernames, OTP codes).</li>
+  <li><strong>I sent money</strong> (bank transfer, credit card, crypto, gift cards).</li>
+  <li><strong>I gave remote access</strong> (downloaded AnyDesk, TeamViewer at someone's request).</li>
+</ul>
+
+<h2>Step 2: Immediate Damage Control</h2>
+
+<h3>If you sent money via Bank/Card</h3>
+<p><strong>Call your bank immediately.</strong> Do not email. Do not use chat bots. Call the fraud number on the back of your card. Tell them: "I have been scammed and I authorised a payment to a fraudster." Ask them to attempt a recall and freeze your account.</p>
+
+<h3>If you shared passwords or codes</h3>
+<p><strong>Change your passwords now.</strong> Start with your email account, then your bank, then social media. If you use the same password everywhere, change it everywhere. Enable Two-Factor Authentication (2FA) immediately.</p>
+
+<h3>If you gave remote access</h3>
+<p><strong>Disconnect your device from the internet.</strong> Turn off Wi-Fi or pull the ethernet cable. The scammer may still have access. Uninstall the software they asked you to download. Run a full antivirus scan. Ideally, have a professional check your device before reconnecting.</p>
+
+<h2>Step 3: Secure Your Identity</h2>
+<p>If you shared your driver's licence, passport, or tax ID:</p>
+<ul>
+  <li><strong>Contact the issuer:</strong> Report the document as stolen/compromised.</li>
+  <li><strong>Check your credit report:</strong> Look for any loans or credit cards you didn't apply for.</li>
+  <li><strong>Contact IDCARE (Australia/NZ) or IdentityTheft.gov (US):</strong> They provide free, specialised support for identity theft.</li>
+</ul>
+
+<h2>Common "After-Scam" Scams (Recovery Scams)</h2>
+<div class="bg-amber-50 border border-amber-200 rounded-lg p-4 my-6">
+  <p class="font-semibold text-amber-900 mb-2">⚠️ WARNING: Do not trust "Recovery Agents"</p>
+  <p class="text-amber-800">
+    After you get scammed, you are a target for "Recovery Scams". Strangers on social media or search engines will claim they can "hack the scammer" and get your money back for a fee. <strong>These are also scammers.</strong> Only your bank or the police can help. Never pay someone to get money back.
+  </p>
+</div>
+
+<h2>Frequently Asked Questions</h2>
+<div class="space-y-4 my-6">
+  <details class="bg-white border rounded-lg p-4">
+    <summary class="font-semibold cursor-pointer">Will I get my money back?</summary>
+    <p class="mt-2 text-slate-600">It depends. If you paid by credit card, you have a good chance via a chargeback. If you sent a bank transfer, it is harder but possible if acted on quickly. Crypto and gift card payments are almost impossible to recover.</p>
+  </details>
+  <details class="bg-white border rounded-lg p-4">
+    <summary class="font-semibold cursor-pointer">Should I report it to the police?</summary>
+    <p class="mt-2 text-slate-600">Yes. File a report with your local police or cybercrime reporting body (e.g., ReportCyber in Australia, Action Fraud in UK, IC3 in US). You will need the report number for insurance or banking claims.</p>
+  </details>
+  <details class="bg-white border rounded-lg p-4">
+    <summary class="font-semibold cursor-pointer">I just clicked a link, am I safe?</summary>
+    <p class="mt-2 text-slate-600">Likely yes, if you didn't enter info or download a file. However, disconnect from the internet and run a virus scan just in case. Watch out for more spam messages, as they now know your number is active.</p>
+  </details>
+</div>
+
+<p>You will get through this. It is expensive and stressful, but it is fixable. Take it one step at a time.</p>
+    `
   }
 ];
 
