@@ -28,123 +28,96 @@ const startHereGuides = [
 ];
 
 export default function GuidesIndexPage() {
-    const topGuides = startHereGuides.map(slug => guides.find(g => g.slug === slug)).filter(Boolean);
+    // Categorize guides
+    const recoveryGuide = guides.find(g => g.slug === 'what-to-do-if-youve-been-scammed');
+
+    const technicalGuides = guides.filter(g =>
+        ['is-this-website-legit', 'how-to-spot-a-fake-link'].includes(g.slug)
+    );
+
+    const scamTypeGuides = guides.filter(g =>
+        !['what-to-do-if-youve-been-scammed', 'is-this-website-legit', 'how-to-spot-a-fake-link'].includes(g.slug)
+    );
 
     return (
         <div className="bg-slate-50 min-h-screen">
             <div className="container mx-auto px-4 py-12 max-w-5xl">
-                <h1 className="text-4xl font-bold mb-4 text-slate-900 text-center">Scam Identification Guides: Learn to Spot Phishing, Fraud and Online Threats</h1>
-                <p className="text-xl text-slate-600 text-center mb-4 max-w-3xl mx-auto">
-                    Our guides explain how different scam types work, show you real message examples, and provide practical steps to protect yourself. Each guide is written in plain language with advice that applies regardless of where you live.
-                </p>
-                <p className="text-md text-slate-500 text-center mb-8 max-w-2xl mx-auto">
-                    Scammers use the same psychological tactics worldwide. Learn to recognise the patterns and you will be protected no matter what platform or service they try to imitate.
-                </p>
+                <header className="text-center mb-16">
+                    <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-slate-900 leading-tight">
+                        Scam Identification & Prevention Hub
+                    </h1>
+                    <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+                        Expert guides on identifying fraud, recovering from scams, and protecting your identity.
+                        Written by security professionals, explained in plain English.
+                    </p>
+                </header>
 
                 {/* Instant Checker CTA */}
-                <div className="bg-gradient-to-r from-primary/10 to-emerald-50 border border-primary/20 rounded-xl p-6 mb-10 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
-                        <ShieldCheck className="w-10 h-10 text-primary flex-shrink-0" />
+                <div className="bg-white border border-slate-200 rounded-2xl p-8 mb-16 shadow-sm flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-8 opacity-5">
+                        <ShieldCheck className="w-64 h-64 text-blue-600" />
+                    </div>
+                    <div className="flex items-start gap-6 relative z-10">
+                        <div className="bg-blue-100 p-4 rounded-xl text-blue-600">
+                            <ShieldCheck className="w-8 h-8" />
+                        </div>
                         <div>
-                            <h2 className="font-bold text-lg text-slate-900">Need to check something right now?</h2>
-                            <p className="text-slate-600">Paste any suspicious message, email, or link for instant analysis.</p>
+                            <h2 className="font-bold text-2xl text-slate-900 mb-2">Have a suspicious message?</h2>
+                            <p className="text-slate-600 text-lg">Don't guess. Paste it into our AI-powered checker for an instant analysis.</p>
                         </div>
                     </div>
-                    <Button asChild size="lg" className="flex-shrink-0">
+                    <Button asChild size="lg" className="flex-shrink-0 relative z-10 bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6 h-auto">
                         <Link href="/check" className="gap-2">
-                            Check a suspicious message or link now
-                            <ArrowRight className="w-4 h-4" />
+                            Check Message Now
+                            <ArrowRight className="w-5 h-5" />
                         </Link>
                     </Button>
                 </div>
 
-                {/* How to Get the Most from These Guides */}
-                <section className="mb-12 bg-white p-6 rounded-xl border border-slate-200">
-                    <div className="flex items-center gap-3 mb-4">
-                        <BookOpen className="w-6 h-6 text-primary" />
-                        <h2 className="text-xl font-bold text-slate-900">How to Get the Most from These Scam Prevention Guides</h2>
-                    </div>
-                    <p className="text-slate-600 mb-4">
-                        Each guide focuses on a specific scam type. We explain the psychology behind the scam, show you what the fraudulent messages actually look like, and provide clear steps for both prevention and damage control. You will find real examples with identifying details removed so you can recognise the patterns yourself.
-                    </p>
-                    <p className="text-slate-600 mb-4">
-                        If you have received a suspicious message, start by using our <Link href="/check" className="text-primary hover:underline">instant scam checker tool for automated analysis</Link>. Then read the relevant guide for deeper context — especially important if you have already clicked a link or provided information.
-                    </p>
-                    <p className="text-slate-600">
-                        For ongoing protection, bookmark a few guides covering the scam types you encounter most often. The tactics evolve, but the underlying patterns remain consistent.
-                    </p>
-                </section>
+                {/* Recovery Hub */}
+                {recoveryGuide && (
+                    <section className="mb-16">
+                        <div className="flex items-center gap-3 mb-6">
+                            <AlertTriangle className="w-8 h-8 text-red-600" />
+                            <h2 className="text-3xl font-bold text-slate-900">Emergency Recovery</h2>
+                        </div>
+                        <Link href={`/guides/${recoveryGuide.slug}`} className="block group">
+                            <Card className="border-2 border-red-100 bg-red-50 hover:border-red-300 transition-all cursor-pointer">
+                                <CardContent className="p-8 flex flex-col md:flex-row gap-8 items-start md:items-center">
+                                    <div className="flex-1">
+                                        <h3 className="text-2xl font-bold text-red-900 mb-3 group-hover:underline decoration-red-900/30 underline-offset-4">
+                                            {recoveryGuide.title}
+                                        </h3>
+                                        <p className="text-lg text-slate-700 leading-relaxed">
+                                            {recoveryGuide.excerpt} If you've clicked a link, sent money, or shared your password, start here immediately.
+                                        </p>
+                                    </div>
+                                    <Button variant="destructive" size="lg" className="shrink-0 bg-red-600 hover:bg-red-700">
+                                        Start Recovery
+                                    </Button>
+                                </CardContent>
+                            </Card>
+                        </Link>
+                    </section>
+                )}
 
-                {/* Universal Warning Signs */}
-                <section className="mb-12 bg-white p-6 rounded-xl border border-slate-200">
-                    <div className="flex items-center gap-3 mb-4">
-                        <AlertTriangle className="w-6 h-6 text-amber-500" />
-                        <h2 className="text-xl font-bold text-slate-900">Universal Warning Signs That Apply to All Scam Types</h2>
+                {/* Technical Analysis Hub */}
+                <section className="mb-16">
+                    <div className="flex items-center gap-3 mb-6">
+                        <BookOpen className="w-8 h-8 text-slate-700" />
+                        <h2 className="text-3xl font-bold text-slate-900">Technical Deep Dives</h2>
                     </div>
-                    <p className="text-slate-600 mb-4">
-                        Regardless of the specific scam, certain red flags appear consistently. Train yourself to pause whenever you notice these patterns:
-                    </p>
-                    <ul className="text-slate-600 space-y-2">
-                        <li>• <strong>Urgency without reason:</strong> Legitimate organisations give you time to verify important requests. Scammers create artificial deadlines.</li>
-                        <li>• <strong>Unusual payment methods:</strong> Gift cards, cryptocurrency, and wire transfers are irreversible — exactly why scammers prefer them.</li>
-                        <li>• <strong>Requests for security credentials:</strong> Banks and services never ask for passwords, PINs, or verification codes via email or text.</li>
-                        <li>• <strong>Mismatched sender details:</strong> The display name says one thing, but the actual email address or phone number does not match.</li>
-                        <li>• <strong>Links that do not match claims:</strong> Hover over links (without clicking) to see if the URL matches the organisation being impersonated.</li>
-                    </ul>
-                </section>
-
-                {/* Why Scammers Succeed Globally */}
-                <section className="mb-12 bg-white p-6 rounded-xl border border-slate-200">
-                    <div className="flex items-center gap-3 mb-4">
-                        <Users className="w-6 h-6 text-blue-500" />
-                        <h2 className="text-xl font-bold text-slate-900">Why These Tactics Work on People Everywhere</h2>
-                    </div>
-                    <p className="text-slate-600 mb-4">
-                        Scammers exploit universal human psychology. They trigger fear of loss, create urgency to bypass rational thinking, and impersonate trusted authorities to lower your guard. These tactics work equally well whether the scammer is impersonating a bank in Europe, a delivery service in Asia, or a government agency in the Americas.
-                    </p>
-                    <p className="text-slate-600">
-                        Understanding why scams work helps you resist them. When you feel rushed, frightened, or pressured to act immediately — that is exactly when you should slow down and verify through official channels.
-                    </p>
-                </section>
-
-                {/* Recommended Starting Guides */}
-                <section className="mb-12">
-                    <h2 className="text-xl font-bold text-slate-900 mb-4">Recommended: Start with These Essential Scam Guides</h2>
-                    <p className="text-slate-600 mb-6">
-                        New to scam awareness? These five guides cover the fraud types people encounter most frequently:
-                    </p>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {topGuides.map((guide) => guide && (
-                            <Link href={`/guides/${guide.slug}`} key={guide.slug} className="hover:no-underline block group">
-                                <Card className="h-full transition-shadow hover:shadow-lg border-2 hover:border-primary/50 bg-white">
-                                    <CardHeader className="pb-2">
-                                        <CardTitle className="text-lg group-hover:text-primary transition-colors leading-tight">
-                                            {guide.title}
-                                        </CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <p className="text-slate-600 text-sm">{guide.excerpt}</p>
-                                    </CardContent>
-                                </Card>
-                            </Link>
-                        ))}
-                    </div>
-                </section>
-
-                {/* Complete Guide Directory */}
-                <section>
-                    <h2 className="text-xl font-bold text-slate-900 mb-6">Complete Directory of Scam Identification Guides</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {guides.map((guide) => (
-                            <Link href={`/guides/${guide.slug}`} key={guide.slug} className="hover:no-underline block group">
-                                <Card className="h-full transition-shadow hover:shadow-lg border-2 hover:border-primary/50 bg-white">
+                    <div className="grid md:grid-cols-2 gap-6">
+                        {technicalGuides.map((guide) => (
+                            <Link href={`/guides/${guide.slug}`} key={guide.slug} className="hover:no-underline block h-full">
+                                <Card className="h-full border-slate-200 hover:border-blue-500 hover:shadow-md transition-all">
                                     <CardHeader>
-                                        <CardTitle className="text-xl group-hover:text-primary transition-colors leading-tight">
+                                        <CardTitle className="text-xl text-slate-900 leading-tight">
                                             {guide.title}
                                         </CardTitle>
                                     </CardHeader>
                                     <CardContent>
-                                        <p className="text-slate-600 text-sm">{guide.excerpt}</p>
+                                        <p className="text-slate-600">{guide.excerpt}</p>
                                     </CardContent>
                                 </Card>
                             </Link>
@@ -152,12 +125,49 @@ export default function GuidesIndexPage() {
                     </div>
                 </section>
 
-                {/* Bottom CTA */}
-                <div className="mt-12 text-center">
-                    <p className="text-slate-600 mb-4">Have a specific message you want to verify?</p>
-                    <Button asChild variant="outline" size="lg">
-                        <Link href="/check">Check any suspicious message, email, or link instantly</Link>
-                    </Button>
+                {/* Common Scam Types Hub */}
+                <section className="mb-16">
+                    <div className="flex items-center gap-3 mb-6">
+                        <Users className="w-8 h-8 text-slate-700" />
+                        <h2 className="text-3xl font-bold text-slate-900">Common Scam Types</h2>
+                    </div>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {scamTypeGuides.map((guide) => (
+                            <Link href={`/guides/${guide.slug}`} key={guide.slug} className="hover:no-underline block h-full">
+                                <Card className="h-full border-slate-200 hover:border-blue-500 hover:shadow-md transition-all flex flex-col">
+                                    <CardHeader>
+                                        <CardTitle className="text-lg text-slate-900 leading-tight">
+                                            {guide.title}
+                                        </CardTitle>
+                                    </CardHeader>
+                                    <CardContent className="flex-1">
+                                        <p className="text-slate-600 text-sm">{guide.excerpt}</p>
+                                    </CardContent>
+                                    <div className="px-6 pb-6 pt-0 mt-auto">
+                                        <span className="text-sm font-medium text-blue-600 flex items-center gap-1 group-hover:gap-2 transition-all">
+                                            Read Guide <ArrowRight className="w-4 h-4" />
+                                        </span>
+                                    </div>
+                                </Card>
+                            </Link>
+                        ))}
+                    </div>
+                </section>
+
+                {/* Footer CTA */}
+                <div className="bg-slate-900 rounded-3xl p-12 text-center text-white">
+                    <h2 className="text-3xl font-bold mb-6">Stay Ahead of Scammers</h2>
+                    <p className="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">
+                        Scams evolve daily. Bookmark this page and check back whenever you receive something suspicious.
+                    </p>
+                    <div className="flex justify-center gap-4 flex-wrap">
+                        <Button asChild size="lg" className="bg-white text-slate-900 hover:bg-slate-100">
+                            <Link href="/check">Run a Scam Check</Link>
+                        </Button>
+                        <Button asChild size="lg" variant="outline" className="border-slate-700 text-white hover:bg-slate-800 hover:text-white">
+                            <Link href="/global-scam-reporting">Report a Scam</Link>
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>

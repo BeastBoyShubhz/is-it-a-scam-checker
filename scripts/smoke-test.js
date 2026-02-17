@@ -17,6 +17,8 @@ const routes = [
     '/check-scam-email',
     '/check-scam-link',
     '/have-i-been-scammed',
+    '/i-got-a-scam-message',
+    '/global-scam-reporting',
 
     // All 10 guide pages
     '/guides/is-this-website-legit',
@@ -44,6 +46,8 @@ const seoCheckPages = [
     '/disclaimer',
     '/contact',
     '/have-i-been-scammed',
+    '/i-got-a-scam-message',
+    '/global-scam-reporting',
     '/guides/what-to-do-if-youve-been-scammed',
 ];
 
