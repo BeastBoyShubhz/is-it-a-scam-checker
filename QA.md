@@ -10,3 +10,4 @@
 - [ ] **PDF Parsing**: Upload a standard PDF invoice and verify text extraction.
 - [ ] **Responsive UI**: Check tool cards on mobile layout.
 - [ ] **Privacy**: Verify network tab shows no file uploads to backend.
+- [ ] **Analytics**: Verify Google Tag Manager script loads.

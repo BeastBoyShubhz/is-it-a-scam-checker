@@ -5,6 +5,8 @@ import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
+import Script from "next/script";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -70,6 +72,16 @@ export default function RootLayout({
                     }}
                 />
                 <Footer />
+                <Script src="https://www.googletagmanager.com/gtag/js?id=G-4NCNQMQVFB" />
+                <Script id="google-analytics">
+                    {`
+                        window.dataLayer = window.dataLayer || [];
+                        function gtag(){dataLayer.push(arguments);}
+                        gtag('js', new Date());
+
+                        gtag('config', 'G-4NCNQMQVFB');
+                    `}
+                </Script>
             </body>
         </html>
     );
