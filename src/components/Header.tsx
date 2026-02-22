@@ -12,6 +12,7 @@ export function Header() {
         { href: '/check', label: 'Check for Scams' },
         { href: '/have-i-been-scammed', label: 'Have I Been Scammed?', className: 'text-red-600 font-bold hover:text-red-700' },
         { href: '/guides', label: 'Scam Guides' },
+        { href: '/blog', label: 'Blog' },
         { href: '/reports', label: 'Community Reports' },
         { href: '/how-it-works', label: 'How it Works' },
         { href: '/about', label: 'About Us' },

@@ -19,6 +19,7 @@ const routes = [
     '/have-i-been-scammed',
     '/i-got-a-scam-message',
     '/global-scam-reporting',
+    '/blog',
 
     // All 10 guide pages
     '/guides/is-this-website-legit',

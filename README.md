@@ -61,4 +61,42 @@ This project is optimized for deployment on Vercel.
 We take privacy seriously.
 - **Client-Side Processing**: All file analysis (OCR, PDF reading) is done in the user's browser via Web Workers.
 - **No Persistence**: Nothing you upload is saved to a database.
-deploy test
+
+## 📝 Automated Blog Drafts
+
+The repo includes an automated blog posting system that generates draft scam-alert posts via a GitHub Action and opens a PR for review.
+
+### How It Works
+
+1. A **GitHub Action** (`.github/workflows/auto-blog.yml`) runs daily at 08:00 UTC (and on manual dispatch).
+2. It runs `scripts/generate-scam-post.ts` which produces an MDX post in `content/blog/`.
+3. The action opens a **Pull Request** — posts are never auto-published directly to `main`.
+4. A reviewer checks the content, verifies sources, previews via Vercel deploy preview, and merges.
+5. **Vercel deploys** the updated site automatically on merge.
+
+### Local Testing
+
+```bash
+# Generate a draft post locally
+npm run generate-blog
+
+# Generate with custom sources
+SCAM_SOURCES='[{"title":"Test Scam","url":"https://example.com","snippet":"A test scam report."}]' npm run generate-blog
+
+# Run dev server and visit http://localhost:3000/blog
+npm run dev
+
+# Build to verify no errors
+npm run build
+```
+
+### Post Structure
+
+Every post uses MDX with required frontmatter (`title`, `date`, `summary`, `tags`, `sources`) and follows a consistent template with sections: Quick Take, How the Con Works, Red Flags, What to Do, Report It, and References.
+
+### Safety Guardrails
+
+- Posts include a mandatory disclaimer: *"This is general information, not legal or financial advice."*
+- A lint check rejects posts containing dangerous phrases outside of clearly labelled warning contexts.
+- Without external sources, the generator produces a safe "Scam Watch Roundup" with general advice only.
+

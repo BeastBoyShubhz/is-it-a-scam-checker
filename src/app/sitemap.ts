@@ -1,6 +1,7 @@
 
 import { MetadataRoute } from 'next'
 import { guides } from '@/lib/guides'
+import { getAllPosts } from '@/lib/posts'
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = 'https://scamchecker.app'
@@ -12,6 +13,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.8,
     }))
 
+    const blogUrls = getAllPosts().map((post) => ({
+        url: `${baseUrl}/blog/${post.slug}`,
+        lastModified: new Date(post.frontmatter.date),
+        changeFrequency: 'weekly' as const,
+        priority: 0.7,
+    }))
+
     const staticRoutes = [
         '',
         '/about',
@@ -21,6 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/terms',
         '/disclaimer',
         '/guides',
+        '/blog',
         '/check-scam-text',
         '/check-scam-email',
         '/check-scam-link',
@@ -34,5 +43,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: route === '' ? 1 : 0.6,
     }))
 
-    return [...staticRoutes, ...guideUrls]
+    return [...staticRoutes, ...guideUrls, ...blogUrls]
 }
