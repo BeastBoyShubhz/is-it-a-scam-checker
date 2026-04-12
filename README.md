@@ -62,26 +62,29 @@ We take privacy seriously.
 - **Client-Side Processing**: All file analysis (OCR, PDF reading) is done in the user's browser via Web Workers.
 - **No Persistence**: Nothing you upload is saved to a database.
 
-## 📝 Automated Blog Drafts
+## 📝 AI-Powered Blog System
 
-The repo includes an automated blog posting system that generates draft scam-alert posts via a GitHub Action and opens a PR for review.
+The repo includes a fully automatic blog publishing system that generates original, SEO-optimised scam alert posts using **Google Gemini AI** and commits them directly to `main`.
 
 ### How It Works
 
-1. A **GitHub Action** (`.github/workflows/auto-blog.yml`) runs daily at 08:00 UTC (and on manual dispatch).
-2. It runs `scripts/generate-scam-post.ts` which produces an MDX post in `content/blog/`.
-3. The action opens a **Pull Request** — posts are never auto-published directly to `main`.
-4. A reviewer checks the content, verifies sources, previews via Vercel deploy preview, and merges.
-5. **Vercel deploys** the updated site automatically on merge.
+1. A **GitHub Action** (`.github/workflows/auto-blog.yml`) runs twice daily (6AM + 6PM UTC) and on manual dispatch.
+2. It calls **Gemini AI** (with model fallback: 2.5 Flash → 2.0 Flash → 2.0 Flash Lite) to research current scam/cybersecurity threats and write an original blog post.
+3. The script strips AI-sounding language using a blocklist of 150+ known chatbot phrases.
+4. Duplicate topics are detected and skipped to keep content fresh.
+5. Posts are committed directly to `main` and **Vercel auto-deploys** — fully hands-off.
+
+### Setup
+
+1. Get a free Gemini API key at [aistudio.google.com](https://aistudio.google.com/apikey)
+2. Add it as a GitHub repository secret named `GEMINI_API_KEY`
+3. In repo Settings → Actions → General → set "Read and write permissions"
 
 ### Local Testing
 
 ```bash
-# Generate a draft post locally
-npm run generate-blog
-
-# Generate with custom sources
-SCAM_SOURCES='[{"title":"Test Scam","url":"https://example.com","snippet":"A test scam report."}]' npm run generate-blog
+# Generate a draft post locally (requires GEMINI_API_KEY env var)
+GEMINI_API_KEY=your-key npm run generate-blog
 
 # Run dev server and visit http://localhost:3000/blog
 npm run dev
@@ -92,11 +95,13 @@ npm run build
 
 ### Post Structure
 
-Every post uses MDX with required frontmatter (`title`, `date`, `summary`, `tags`, `sources`) and follows a consistent template with sections: Quick Take, How the Con Works, Red Flags, What to Do, Report It, and References.
+Every post uses MDX with required frontmatter (`title`, `date`, `summary`, `tags`, `sources`) and follows a journalistic structure: opening hook, how the scam works, who is targeted, red flags, action steps, reporting links, and a closing CTA.
 
 ### Safety Guardrails
 
-- Posts include a mandatory disclaimer: *"This is general information, not legal or financial advice."*
+- Posts include a mandatory disclaimer: *"This post is for informational purposes only and does not constitute legal or financial advice."*
 - A lint check rejects posts containing dangerous phrases outside of clearly labelled warning contexts.
-- Without external sources, the generator produces a safe "Scam Watch Roundup" with general advice only.
+- AI-sounding phrases are automatically stripped from generated content.
+- Duplicate topics are detected and skipped.
+
 

@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **AI-powered blog generation** — rewrote `generate-scam-post.ts` to use Gemini 2.0 Flash
+  - Generates original, research-based posts on current scam/cybersecurity threats
+  - Anti-AI-pattern detection strips 50+ known chatbot phrases
+  - Duplicate topic detection prevents rehashing existing posts
+  - SEO-optimised titles (50-65 chars), summaries (140-155 chars), and keyword-rich headings
+  - Journalistic writing style enforced via detailed prompt engineering
+- **Fixed GitHub Actions workflow** (`auto-blog.yml`)
+  - Upgraded `actions/checkout` → v4.2.2, `actions/setup-node` → v4.4.0 (Node 22)
+  - Replaced `peter-evans/create-pull-request` with `gh pr create` (fixes PR permission error)
+  - Changed schedule to 2x daily (6AM + 6PM UTC) for 2 posts/day
+  - Added `GEMINI_API_KEY` secret requirement
+
 ### Added
 - **Automated blog system** at `/blog` with MDX rendering via `next-mdx-remote`
   - Blog index page listing posts sorted by date
