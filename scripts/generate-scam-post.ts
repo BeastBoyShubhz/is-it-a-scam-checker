@@ -380,6 +380,7 @@ async function callGemini(prompt: string): Promise<string> {
                             topP: 0.95,
                             topK: 40,
                             maxOutputTokens: 4096,
+                            responseMimeType: 'application/json',
                         },
                     }),
                 });
@@ -410,7 +411,20 @@ async function callGemini(prompt: string): Promise<string> {
                 }
 
                 const data = await response.json();
-                const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+                // Gemini 2.5 models return thinking in parts[0] and
+                // the actual response in a later part. Find the last
+                // non-thought text part.
+                const parts = data?.candidates?.[0]?.content?.parts ?? [];
+                let text = '';
+                for (const part of parts) {
+                    if (part.text && !part.thought) {
+                        text = part.text;
+                    }
+                }
+                // Fallback: use last part if all were marked as thought
+                if (!text && parts.length > 0) {
+                    text = parts[parts.length - 1]?.text ?? '';
+                }
 
                 if (!text) {
                     lastError = `${model} returned empty response`;
