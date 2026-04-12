@@ -379,7 +379,7 @@ async function callGemini(prompt: string): Promise<string> {
                             temperature: 1.0,
                             topP: 0.95,
                             topK: 40,
-                            maxOutputTokens: 4096,
+                            maxOutputTokens: 16384,
                             responseMimeType: 'application/json',
                         },
                     }),
@@ -564,8 +564,12 @@ SOURCES: 2-4 real, plausible URLs from government agencies (scamwatch.gov.au, ft
     let parsed: GeneratedPost;
     try {
         parsed = JSON.parse(jsonStr);
-    } catch {
+    } catch (parseErr: unknown) {
+        const parseMsg = parseErr instanceof Error ? parseErr.message : String(parseErr);
         console.error('Failed to parse Gemini response as JSON.');
+        console.error('Parse error:', parseMsg);
+        console.error('Response length:', raw.length, 'chars');
+        console.error('Last 100 chars:', JSON.stringify(raw.slice(-100)));
         console.error('Raw response (first 1000 chars):', raw.slice(0, 1000));
         throw new Error('Gemini did not return valid JSON. Retrying may help.');
     }
