@@ -528,28 +528,90 @@ async function callGroq(prompt: string): Promise<string> {
     throw new Error(`All Groq models failed. Last error: ${lastError}`);
 }
 
-// ── Unified AI call: Gemini first, Groq fallback ──────────────────────────
+// ── JSON repair ───────────────────────────────────────────────────────────
 
-async function callAI(prompt: string): Promise<string> {
-    // Try Gemini first
-    if (process.env.GEMINI_API_KEY) {
+/**
+ * Fix unescaped control characters inside JSON string values.
+ * Models often return literal newlines/tabs inside the "body" string
+ * which breaks JSON.parse.
+ */
+function repairJSON(raw: string): string {
+    try {
+        JSON.parse(raw);
+        return raw; // Already valid
+    } catch {
+        // Walk char-by-char, tracking whether we're inside a string.
+        // Replace literal control chars inside strings with their escapes.
+        let result = '';
+        let inString = false;
+        let escaped = false;
+
+        for (let i = 0; i < raw.length; i++) {
+            const ch = raw[i];
+
+            if (escaped) {
+                result += ch;
+                escaped = false;
+                continue;
+            }
+
+            if (ch === '\\' && inString) {
+                result += ch;
+                escaped = true;
+                continue;
+            }
+
+            if (ch === '"') {
+                inString = !inString;
+                result += ch;
+                continue;
+            }
+
+            if (inString) {
+                if (ch === '\n') { result += '\\n'; continue; }
+                if (ch === '\r') { result += '\\r'; continue; }
+                if (ch === '\t') { result += '\\t'; continue; }
+            }
+
+            result += ch;
+        }
+
+        return result;
+    }
+}
+
+/**
+ * Clean raw AI text → parsed JSON, with repair attempts.
+ */
+function parseAIResponse(raw: string): GeneratedPost {
+    let jsonStr = raw.trim();
+    if (jsonStr.startsWith('```')) {
+        jsonStr = jsonStr.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '');
+    }
+    const jsonStart = jsonStr.indexOf('{');
+    const jsonEnd = jsonStr.lastIndexOf('}');
+    if (jsonStart >= 0 && jsonEnd > jsonStart) {
+        jsonStr = jsonStr.substring(jsonStart, jsonEnd + 1);
+    }
+
+    // Attempt 1: direct parse
+    try {
+        return JSON.parse(jsonStr);
+    } catch {
+        // Attempt 2: repair control chars and retry
+        const repaired = repairJSON(jsonStr);
         try {
-            return await callGemini(prompt);
-        } catch (err: unknown) {
-            const msg = err instanceof Error ? err.message : String(err);
-            console.log(`\n⚠️  Gemini failed: ${msg}`);
-            console.log('🔄 Falling back to Groq...\n');
+            return JSON.parse(repaired);
+        } catch (parseErr: unknown) {
+            const parseMsg = parseErr instanceof Error ? parseErr.message : String(parseErr);
+            console.error('Failed to parse AI response as JSON (even after repair).');
+            console.error('Parse error:', parseMsg);
+            console.error('Response length:', raw.length, 'chars');
+            console.error('Last 100 chars:', JSON.stringify(raw.slice(-100)));
+            console.error('Raw response (first 500 chars):', raw.slice(0, 500));
+            throw new Error('AI did not return valid JSON.');
         }
     }
-
-    // Fallback to Groq
-    if (process.env.GROQ_API_KEY) {
-        return await callGroq(prompt);
-    }
-
-    throw new Error(
-        'No AI provider available. Set GEMINI_API_KEY and/or GROQ_API_KEY.',
-    );
 }
 
 // ── Post generation ────────────────────────────────────────────────────────
@@ -561,15 +623,13 @@ function slugify(text: string): string {
         .replace(/^-|-$/g, '');
 }
 
-async function generatePost(): Promise<GeneratedPost> {
-    const existingTitles = getExistingTitles();
+function buildPrompt(existingTitles: string[]): string {
     const existingContext = existingTitles.length > 0
         ? `\n\nALREADY PUBLISHED (you MUST write about a DIFFERENT topic):\n${existingTitles.map((t) => `- ${t}`).join('\n')}`
         : '';
 
     const today = new Date().toISOString().split('T')[0];
 
-    // Randomise the angle to prevent repetitive posts
     const angles = [
         'Focus on a specific new scam reported in the last 48 hours. Name the exact scam, the country affected, and how many people have been hit.',
         'Write about a new phishing technique or social engineering tactic that criminals are using right now. Be extremely specific about how the attack works technically.',
@@ -582,7 +642,7 @@ async function generatePost(): Promise<GeneratedPost> {
     ];
     const randomAngle = angles[Math.floor(Math.random() * angles.length)];
 
-    const prompt = `You are writing a blog post for scamchecker.app — a free tool that helps people check if messages, emails, and links are scams.
+    return `You are writing a blog post for scamchecker.app — a free tool that helps people check if messages, emails, and links are scams.
 
 CRITICAL RULE: You are NOT an AI assistant writing a blog post. You ARE a cybersecurity journalist named "The Scam Checker Team". Write as if you personally investigated this story. Never refer to yourself as AI. Never use phrases like "here is" or "I've compiled" or "below is". The reader should have ZERO indication this was written by AI.
 
@@ -638,7 +698,8 @@ REQUIRED STRUCTURE:
 
 WORD COUNT: Between 800 and 1200 words (body only, not frontmatter).
 
-OUTPUT FORMAT — Return ONLY pure JSON. No markdown fences. No commentary. No text before or after:
+OUTPUT FORMAT — Return ONLY pure JSON. No markdown fences. No commentary. No text before or after.
+CRITICAL: All newlines in the body MUST be encoded as \\n inside the JSON string. Do NOT use literal newlines inside string values.
 {
   "title": "Your Title Here (50-65 chars)",
   "summary": "Your meta description (140-155 chars)",
@@ -648,40 +709,24 @@ OUTPUT FORMAT — Return ONLY pure JSON. No markdown fences. No commentary. No t
 }
 
 SOURCES: 2-4 real, plausible URLs from government agencies (scamwatch.gov.au, ftc.gov, actionfraud.police.uk), major news (BBC, ABC, Reuters), or security firms (Kaspersky, Norton, ESET).`;
+}
 
-    const raw = await callAI(prompt);
+/**
+ * Try to generate a post using a specific provider function.
+ * Returns the parsed post or throws on failure.
+ */
+async function tryProvider(
+    name: string,
+    callFn: (prompt: string) => Promise<string>,
+    prompt: string,
+): Promise<GeneratedPost> {
+    const raw = await callFn(prompt);
+    const parsed = parseAIResponse(raw);
 
-    // Parse the JSON response — handle potential markdown fences
-    let jsonStr = raw.trim();
-    if (jsonStr.startsWith('```')) {
-        jsonStr = jsonStr.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '');
-    }
-    // Also handle if there's text before the JSON
-    const jsonStart = jsonStr.indexOf('{');
-    const jsonEnd = jsonStr.lastIndexOf('}');
-    if (jsonStart > 0 || jsonEnd < jsonStr.length - 1) {
-        jsonStr = jsonStr.substring(jsonStart, jsonEnd + 1);
-    }
-
-    let parsed: GeneratedPost;
-    try {
-        parsed = JSON.parse(jsonStr);
-    } catch (parseErr: unknown) {
-        const parseMsg = parseErr instanceof Error ? parseErr.message : String(parseErr);
-        console.error('Failed to parse AI response as JSON.');
-        console.error('Parse error:', parseMsg);
-        console.error('Response length:', raw.length, 'chars');
-        console.error('Last 100 chars:', JSON.stringify(raw.slice(-100)));
-        console.error('Raw response (first 1000 chars):', raw.slice(0, 1000));
-        throw new Error('AI did not return valid JSON. Retrying may help.');
-    }
-
-    // Validate required fields
     if (!parsed.title || !parsed.summary || !parsed.body) {
-        throw new Error('AI response missing required fields (title, summary, or body).');
+        throw new Error(`${name} response missing required fields (title, summary, or body).`);
     }
 
-    // Default tags and sources if missing
     if (!Array.isArray(parsed.tags) || parsed.tags.length === 0) {
         parsed.tags = ['scam-alert'];
     }
@@ -690,6 +735,40 @@ SOURCES: 2-4 real, plausible URLs from government agencies (scamwatch.gov.au, ft
     }
 
     return parsed;
+}
+
+async function generatePost(): Promise<GeneratedPost> {
+    const existingTitles = getExistingTitles();
+    const prompt = buildPrompt(existingTitles);
+
+    // Build provider list: Gemini first, Groq fallback
+    const providers: { name: string; fn: (p: string) => Promise<string> }[] = [];
+    if (process.env.GEMINI_API_KEY) {
+        providers.push({ name: 'Gemini', fn: callGemini });
+    }
+    if (process.env.GROQ_API_KEY) {
+        providers.push({ name: 'Groq', fn: callGroq });
+    }
+    if (providers.length === 0) {
+        throw new Error('No AI provider available. Set GEMINI_API_KEY and/or GROQ_API_KEY.');
+    }
+
+    let lastError = '';
+    for (const { name, fn } of providers) {
+        try {
+            const post = await tryProvider(name, fn, prompt);
+            return post;
+        } catch (err: unknown) {
+            const msg = err instanceof Error ? err.message : String(err);
+            lastError = msg;
+            console.log(`\n⚠️  ${name} failed: ${msg}`);
+            if (providers.indexOf({ name, fn }) < providers.length - 1) {
+                console.log(`🔄 Trying next provider...\n`);
+            }
+        }
+    }
+
+    throw new Error(`All AI providers failed. Last error: ${lastError}`);
 }
 
 // ── Disclaimer ─────────────────────────────────────────────────────────────
