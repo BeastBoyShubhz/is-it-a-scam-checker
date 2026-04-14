@@ -478,7 +478,7 @@ async function callGroq(prompt: string): Promise<string> {
                             { role: 'user', content: prompt },
                         ],
                         temperature: 1.0,
-                        max_tokens: 16384,
+                        max_tokens: 4096,
                         response_format: { type: 'json_object' },
                     }),
                 });
