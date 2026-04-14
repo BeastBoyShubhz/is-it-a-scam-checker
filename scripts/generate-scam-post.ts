@@ -1,15 +1,16 @@
 /**
  * generate-scam-post.ts
  *
- * Generates a new scam/cybersecurity blog post using Gemini AI.
+ * Generates a new scam/cybersecurity blog post using AI (Gemini primary, Groq fallback).
  * The AI researches current scam trends and writes an original,
  * SEO-optimised post in a journalistic tone — free of AI patterns.
  *
  * Usage:
- *   GEMINI_API_KEY=xxx npx tsx scripts/generate-scam-post.ts
+ *   GEMINI_API_KEY=xxx GROQ_API_KEY=xxx npx tsx scripts/generate-scam-post.ts
  *
  * Environment variables:
- *   GEMINI_API_KEY — Google Gemini API key (required)
+ *   GEMINI_API_KEY — Google Gemini API key (primary)
+ *   GROQ_API_KEY   — Groq API key (fallback if Gemini fails)
  */
 
 import * as fs from 'fs';
@@ -341,7 +342,7 @@ function getExistingTitles(): string[] {
 
 // ── Gemini API call with model fallback ────────────────────────────────────
 
-const MODELS = [
+const GEMINI_MODELS = [
     'gemini-2.5-flash',
     'gemini-2.0-flash',
     'gemini-2.0-flash-lite',
@@ -350,15 +351,12 @@ const MODELS = [
 async function callGemini(prompt: string): Promise<string> {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-        throw new Error(
-            'GEMINI_API_KEY environment variable is required. ' +
-            'Get a free key at https://aistudio.google.com/apikey',
-        );
+        throw new Error('GEMINI_API_KEY not set');
     }
 
     let lastError = '';
 
-    for (const model of MODELS) {
+    for (const model of GEMINI_MODELS) {
         console.log(`   Trying model: ${model}...`);
 
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
@@ -387,17 +385,15 @@ async function callGemini(prompt: string): Promise<string> {
 
                 if (response.status === 429) {
                     const errBody = await response.text();
-                    // Extract retry delay if available
                     const retryMatch = errBody.match(/"retryDelay":\s*"(\d+)s"/);
                     const waitSec = retryMatch ? Math.min(parseInt(retryMatch[1], 10), 60) : 30;
 
                     if (attempt === 1) {
                         console.log(`   ⏳ Rate limited on ${model}, waiting ${waitSec}s...`);
                         await new Promise((r) => setTimeout(r, waitSec * 1000));
-                        continue; // Retry same model
+                        continue;
                     }
 
-                    // Second attempt also failed — try next model
                     lastError = `Rate limited on ${model}`;
                     console.log(`   ⚠️  ${model} quota exhausted, trying next model...`);
                     break;
@@ -411,9 +407,6 @@ async function callGemini(prompt: string): Promise<string> {
                 }
 
                 const data = await response.json();
-                // Gemini 2.5 models return thinking in parts[0] and
-                // the actual response in a later part. Find the last
-                // non-thought text part.
                 const parts = data?.candidates?.[0]?.content?.parts ?? [];
                 let text = '';
                 for (const part of parts) {
@@ -421,7 +414,6 @@ async function callGemini(prompt: string): Promise<string> {
                         text = part.text;
                     }
                 }
-                // Fallback: use last part if all were marked as thought
                 if (!text && parts.length > 0) {
                     text = parts[parts.length - 1]?.text ?? '';
                 }
@@ -448,6 +440,116 @@ async function callGemini(prompt: string): Promise<string> {
     }
 
     throw new Error(`All Gemini models failed. Last error: ${lastError}`);
+}
+
+// ── Groq API call (fallback provider) ─────────────────────────────────────
+
+const GROQ_MODELS = [
+    'llama-3.3-70b-versatile',
+    'llama-3.1-8b-instant',
+];
+
+async function callGroq(prompt: string): Promise<string> {
+    const apiKey = process.env.GROQ_API_KEY;
+    if (!apiKey) {
+        throw new Error('GROQ_API_KEY not set');
+    }
+
+    let lastError = '';
+
+    for (const model of GROQ_MODELS) {
+        console.log(`   Trying Groq model: ${model}...`);
+
+        for (let attempt = 1; attempt <= 2; attempt++) {
+            try {
+                const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`,
+                    },
+                    body: JSON.stringify({
+                        model,
+                        messages: [
+                            {
+                                role: 'system',
+                                content: 'You are a JSON-only response bot. Return ONLY valid JSON with no markdown fences, no commentary, no text before or after the JSON object.',
+                            },
+                            { role: 'user', content: prompt },
+                        ],
+                        temperature: 1.0,
+                        max_tokens: 16384,
+                        response_format: { type: 'json_object' },
+                    }),
+                });
+
+                if (response.status === 429) {
+                    if (attempt === 1) {
+                        console.log(`   ⏳ Rate limited on Groq ${model}, waiting 30s...`);
+                        await new Promise((r) => setTimeout(r, 30000));
+                        continue;
+                    }
+                    lastError = `Rate limited on Groq ${model}`;
+                    console.log(`   ⚠️  Groq ${model} quota exhausted, trying next model...`);
+                    break;
+                }
+
+                if (!response.ok) {
+                    const errText = await response.text();
+                    lastError = `Groq ${model} error ${response.status}: ${errText.slice(0, 200)}`;
+                    console.log(`   ⚠️  Groq ${model} returned ${response.status}, trying next model...`);
+                    break;
+                }
+
+                const data = await response.json();
+                const text = data?.choices?.[0]?.message?.content ?? '';
+
+                if (!text) {
+                    lastError = `Groq ${model} returned empty response`;
+                    console.log(`   ⚠️  Groq ${model} returned empty response, trying next model...`);
+                    break;
+                }
+
+                console.log(`   ✓ Got response from Groq ${model}`);
+                return text;
+            } catch (err: unknown) {
+                const msg = err instanceof Error ? err.message : String(err);
+                lastError = `Groq ${model} network error: ${msg}`;
+                if (attempt === 1) {
+                    console.log(`   ⏳ Network error on Groq ${model}, retrying...`);
+                    await new Promise((r) => setTimeout(r, 5000));
+                    continue;
+                }
+                break;
+            }
+        }
+    }
+
+    throw new Error(`All Groq models failed. Last error: ${lastError}`);
+}
+
+// ── Unified AI call: Gemini first, Groq fallback ──────────────────────────
+
+async function callAI(prompt: string): Promise<string> {
+    // Try Gemini first
+    if (process.env.GEMINI_API_KEY) {
+        try {
+            return await callGemini(prompt);
+        } catch (err: unknown) {
+            const msg = err instanceof Error ? err.message : String(err);
+            console.log(`\n⚠️  Gemini failed: ${msg}`);
+            console.log('🔄 Falling back to Groq...\n');
+        }
+    }
+
+    // Fallback to Groq
+    if (process.env.GROQ_API_KEY) {
+        return await callGroq(prompt);
+    }
+
+    throw new Error(
+        'No AI provider available. Set GEMINI_API_KEY and/or GROQ_API_KEY.',
+    );
 }
 
 // ── Post generation ────────────────────────────────────────────────────────
@@ -547,7 +649,7 @@ OUTPUT FORMAT — Return ONLY pure JSON. No markdown fences. No commentary. No t
 
 SOURCES: 2-4 real, plausible URLs from government agencies (scamwatch.gov.au, ftc.gov, actionfraud.police.uk), major news (BBC, ABC, Reuters), or security firms (Kaspersky, Norton, ESET).`;
 
-    const raw = await callGemini(prompt);
+    const raw = await callAI(prompt);
 
     // Parse the JSON response — handle potential markdown fences
     let jsonStr = raw.trim();
@@ -566,17 +668,17 @@ SOURCES: 2-4 real, plausible URLs from government agencies (scamwatch.gov.au, ft
         parsed = JSON.parse(jsonStr);
     } catch (parseErr: unknown) {
         const parseMsg = parseErr instanceof Error ? parseErr.message : String(parseErr);
-        console.error('Failed to parse Gemini response as JSON.');
+        console.error('Failed to parse AI response as JSON.');
         console.error('Parse error:', parseMsg);
         console.error('Response length:', raw.length, 'chars');
         console.error('Last 100 chars:', JSON.stringify(raw.slice(-100)));
         console.error('Raw response (first 1000 chars):', raw.slice(0, 1000));
-        throw new Error('Gemini did not return valid JSON. Retrying may help.');
+        throw new Error('AI did not return valid JSON. Retrying may help.');
     }
 
     // Validate required fields
     if (!parsed.title || !parsed.summary || !parsed.body) {
-        throw new Error('Gemini response missing required fields (title, summary, or body).');
+        throw new Error('AI response missing required fields (title, summary, or body).');
     }
 
     // Default tags and sources if missing
@@ -603,7 +705,7 @@ async function main(): Promise<void> {
         fs.mkdirSync(blogDir, { recursive: true });
     }
 
-    console.log('🔍 Generating blog post via Gemini...');
+    console.log('🔍 Generating blog post via AI (Gemini → Groq fallback)...');
 
     const post = await generatePost();
 

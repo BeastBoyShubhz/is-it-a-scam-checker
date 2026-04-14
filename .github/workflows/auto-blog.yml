@@ -1,5 +1,5 @@
 name: Auto Blog Post
-# Generates 2 AI-written scam/cybersecurity blog posts daily using Gemini.
+# Generates 2 AI-written scam/cybersecurity blog posts daily using Gemini (with Groq fallback).
 # Posts are committed directly to main — fully automatic, no PR review needed.
 # Schedule: 6AM UTC and 6PM UTC (2 posts per day).
 
@@ -34,6 +34,7 @@ jobs:
         run: npx tsx scripts/generate-scam-post.ts
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
 
       - name: Commit and push
         run: |
