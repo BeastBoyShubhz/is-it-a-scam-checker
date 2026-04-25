@@ -69,3 +69,34 @@ export function getPostBySlug(slug: string): Post | null {
         content,
     };
 }
+
+/**
+ * Pick up to `limit` posts most relevant to the given post.
+ * Ranking: shared-tag count, then recency. Falls back to newest posts.
+ */
+export function getRelatedPosts(currentSlug: string, limit: number = 4): Post[] {
+    const all = getAllPosts().filter((p) => p.slug !== currentSlug);
+    const current = getPostBySlug(currentSlug);
+    if (!current) return all.slice(0, limit);
+
+    const currentTags = new Set(
+        (current.frontmatter.tags || []).map((t) => t.toLowerCase()),
+    );
+
+    const scored = all.map((p) => {
+        const overlap = (p.frontmatter.tags || []).filter((t) =>
+            currentTags.has(t.toLowerCase()),
+        ).length;
+        return { post: p, overlap };
+    });
+
+    scored.sort((a, b) => {
+        if (b.overlap !== a.overlap) return b.overlap - a.overlap;
+        return (
+            new Date(b.post.frontmatter.date).getTime() -
+            new Date(a.post.frontmatter.date).getTime()
+        );
+    });
+
+    return scored.slice(0, limit).map((s) => s.post);
+}

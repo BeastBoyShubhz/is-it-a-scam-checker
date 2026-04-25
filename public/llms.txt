@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+Purpose:
+This website provides scam detection tools, scam reports, and educational content for identifying online fraud, phishing attempts, and malicious websites.
+
+Primary pages:
+https://scamchecker.app/check
+https://scamchecker.app/guides
+https://scamchecker.app/reports
+
+Focus:
+Cybersecurity, scam detection, phishing prevention, fraud awareness.

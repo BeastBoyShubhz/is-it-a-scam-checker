@@ -42,7 +42,7 @@ export async function LatestScams() {
                         Recently Reported Scams
                     </h2>
                     <Link href="/reports" className="text-blue-600 hover:underline text-sm font-medium">
-                        View All Reports &rarr;
+                        View all community-reported scams &rarr;
                     </Link>
                 </div>
 

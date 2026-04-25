@@ -129,8 +129,8 @@ export default function BlogIndexPage() {
                                         </CardContent>
                                         <div className="px-6 pb-6 pt-0 mt-auto">
                                             <span className="text-sm font-medium text-blue-600 flex items-center gap-1">
-                                                Read Article{' '}
-                                                <ArrowRight className="w-4 h-4" />
+                                                Read the full scam alert{' '}
+                                                <ArrowRight className="w-4 h-4" aria-hidden="true" />
                                             </span>
                                         </div>
                                     </Card>
@@ -139,6 +139,57 @@ export default function BlogIndexPage() {
                         </div>
                     </section>
                 )}
+
+                {/* Hub navigation */}
+                <nav
+                    aria-label="Scam Checker hub navigation"
+                    className="mt-16 rounded-2xl border border-slate-200 bg-white p-6"
+                >
+                    <h2 className="text-xl font-bold text-slate-900 mb-3">
+                        Continue exploring Scam Checker
+                    </h2>
+                    <ul className="grid sm:grid-cols-2 gap-2 text-sm list-none p-0">
+                        <li>
+                            <Link href="/check" className="text-blue-700 hover:underline">
+                                Check if a message, email or link is a scam
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/guides" className="text-blue-700 hover:underline">
+                                Browse scam identification guides
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/reports" className="text-blue-700 hover:underline">
+                                View community-reported scam reports
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/have-i-been-scammed"
+                                className="text-red-600 font-semibold hover:underline"
+                            >
+                                Have I been scammed? Damage-control checklist
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/global-scam-reporting"
+                                className="text-blue-700 hover:underline"
+                            >
+                                Report a scam in your country
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/how-it-works"
+                                className="text-blue-700 hover:underline"
+                            >
+                                How our scam detection technology works
+                            </Link>
+                        </li>
+                    </ul>
+                </nav>
 
                 {/* Footer CTA */}
                 <div className="bg-slate-900 rounded-3xl p-12 text-center text-white mt-16">
@@ -153,7 +204,7 @@ export default function BlogIndexPage() {
                             size="lg"
                             className="bg-white text-slate-900 hover:bg-slate-100"
                         >
-                            <Link href="/check">Run a Scam Check</Link>
+                            <Link href="/check">Run a free scam check now</Link>
                         </Button>
                         <Button
                             asChild
@@ -161,7 +212,7 @@ export default function BlogIndexPage() {
                             variant="outline"
                             className="border-slate-700 text-white hover:bg-slate-800 hover:text-white"
                         >
-                            <Link href="/guides">Read Guides</Link>
+                            <Link href="/guides">Read scam identification guides</Link>
                         </Button>
                     </div>
                 </div>

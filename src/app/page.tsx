@@ -3,9 +3,10 @@ import { LatestScams } from '@/components/LatestScams';
 import { ScamChecker } from '@/components/ScamChecker';
 import { FAQ } from '@/components/FAQ';
 import { TrustSection } from '@/components/TrustSection';
+import { getAllPosts } from '@/lib/posts';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { MessageSquare, Mail, Globe, ArrowRight, BookOpen, ShieldCheck, AlertTriangle, Search, Lock, Zap } from 'lucide-react';
+import { MessageSquare, Mail, Globe, ArrowRight, BookOpen, ShieldCheck, AlertTriangle, Search, Newspaper } from 'lucide-react';
 
 export const metadata: Metadata = {
     title: 'Free Online Scam Checker: Detect Phishing Messages, Emails and Suspicious Links',
@@ -32,6 +33,8 @@ const popularGuides = [
 ];
 
 export default function Home() {
+    const recentPosts = getAllPosts().slice(0, 4);
+
     return (
         <div className="flex flex-col min-h-screen">
 
@@ -95,12 +98,12 @@ export default function Home() {
                     <div className="flex flex-col sm:flex-row justify-center gap-4">
                         <Button asChild size="lg" className="bg-red-600 hover:bg-red-700 text-white border-0">
                             <Link href="/have-i-been-scammed">
-                                Help! I Think I Got Scammed
+                                Open the &quot;I think I got scammed&quot; checklist
                             </Link>
                         </Button>
                         <Button asChild variant="outline" size="lg" className="bg-white hover:bg-red-50 text-red-900 border-red-200">
                             <Link href="/guides/what-to-do-if-youve-been-scammed">
-                                Read Recovery Guide
+                                Read the full scam recovery guide
                             </Link>
                         </Button>
                     </div>
@@ -269,7 +272,124 @@ export default function Home() {
                 </div>
             </section>
 
+            {/* Latest scam alerts from the blog */}
+            {recentPosts.length > 0 && (
+                <section className="py-12 bg-slate-50 border-t border-slate-100">
+                    <div className="container mx-auto px-4 max-w-6xl">
+                        <div className="flex items-center justify-center gap-3 mb-3">
+                            <Newspaper className="w-6 h-6 text-primary" />
+                            <h2 className="text-2xl font-bold text-slate-800">
+                                Latest scam alerts and fraud news
+                            </h2>
+                        </div>
+                        <p className="text-center text-slate-600 mb-8 max-w-2xl mx-auto">
+                            Real scams reported recently. Click any alert to read the full breakdown,
+                            red flags, and what to do if you have been targeted.
+                        </p>
+                        <ul className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 list-none p-0">
+                            {recentPosts.map((p) => (
+                                <li key={p.slug}>
+                                    <Link
+                                        href={`/blog/${p.slug}`}
+                                        className="group p-5 rounded-xl bg-white border border-slate-200 hover:border-primary/50 hover:shadow-md transition-all flex flex-col h-full"
+                                    >
+                                        <time
+                                            dateTime={p.frontmatter.date}
+                                            className="text-xs font-medium text-slate-500 mb-1"
+                                        >
+                                            {new Date(p.frontmatter.date).toLocaleDateString(
+                                                'en-AU',
+                                                { day: 'numeric', month: 'long', year: 'numeric' },
+                                            )}
+                                        </time>
+                                        <h3 className="font-semibold text-slate-900 mb-2 group-hover:text-primary transition-colors leading-snug">
+                                            {p.frontmatter.title}
+                                        </h3>
+                                        <p className="text-slate-500 text-sm">
+                                            {p.frontmatter.summary}
+                                        </p>
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                        <div className="text-center mt-8">
+                            <Button asChild variant="outline" size="lg">
+                                <Link href="/blog" className="gap-2">
+                                    Read every scam alert on the blog
+                                    <ArrowRight className="w-4 h-4" />
+                                </Link>
+                            </Button>
+                        </div>
+                    </div>
+                </section>
+            )}
+
             <LatestScams />
+
+            {/* Quick navigation hub */}
+            <nav
+                aria-label="Scam Checker site navigation"
+                className="py-12 bg-white border-t border-slate-100"
+            >
+                <div className="container mx-auto px-4 max-w-5xl">
+                    <h2 className="text-2xl font-bold text-center text-slate-900 mb-3">
+                        Where to go next on Scam Checker
+                    </h2>
+                    <p className="text-center text-slate-600 mb-8 max-w-2xl mx-auto">
+                        Pick the path that matches your situation — verify a message, recover from a scam, or learn how scammers operate.
+                    </p>
+                    <ul className="grid md:grid-cols-3 gap-3 text-sm list-none p-0">
+                        <li>
+                            <Link
+                                href="/check"
+                                className="block p-4 rounded-lg border border-slate-200 hover:border-primary text-slate-800 hover:text-primary"
+                            >
+                                Check if a website or message is a scam
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/guides"
+                                className="block p-4 rounded-lg border border-slate-200 hover:border-primary text-slate-800 hover:text-primary"
+                            >
+                                Read scam identification guides
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/reports"
+                                className="block p-4 rounded-lg border border-slate-200 hover:border-primary text-slate-800 hover:text-primary"
+                            >
+                                View community-reported scam reports
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/have-i-been-scammed"
+                                className="block p-4 rounded-lg border border-red-200 hover:border-red-400 text-red-700 font-semibold"
+                            >
+                                Have I been scammed? Damage-control checklist
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/global-scam-reporting"
+                                className="block p-4 rounded-lg border border-slate-200 hover:border-primary text-slate-800 hover:text-primary"
+                            >
+                                Report a scam in your country
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/how-it-works"
+                                className="block p-4 rounded-lg border border-slate-200 hover:border-primary text-slate-800 hover:text-primary"
+                            >
+                                How our scam detection technology works
+                            </Link>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
 
             {/* FAQ Section */}
             <FAQ />
