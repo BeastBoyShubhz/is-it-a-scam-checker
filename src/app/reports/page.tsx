@@ -5,7 +5,7 @@ import { Report } from '@prisma/client';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { AlertOctagon, BookOpen, ShieldCheck, Users, TrendingUp } from 'lucide-react';
+import { AlertOctagon, BookOpen, ShieldCheck, Users, TrendingUp, Globe, Phone, Mail, Coins, Clock, Flame, ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
     title: 'Live Scam Reports: Real-Time Feed of Reported Fraud Attempts',
@@ -57,7 +57,7 @@ export default async function ReportsPage() {
         <div className="min-h-screen bg-slate-50">
             <div className="container mx-auto px-4 py-12 max-w-4xl">
                 <div className="mb-8">
-                    <Link href="/" className="text-sm text-slate-500 hover:text-slate-900 transition-colors mb-4 inline-block">&larr; Back to Home</Link>
+                    <Link href="/" className="text-sm text-slate-500 hover:text-slate-900 transition-colors mb-4 inline-block">&larr; Return to Scam Checker home</Link>
 
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div>
@@ -102,6 +102,117 @@ export default async function ReportsPage() {
                         <li>• <strong>Contribute your experience:</strong> If you received a scam attempt, <Link href="/check" className="text-primary hover:underline">analyse and report it to help protect others</Link>.</li>
                     </ul>
                 </section>
+
+                {/* Report category navigation */}
+                <nav
+                    aria-label="Browse community reports by category"
+                    className="bg-white border border-slate-200 rounded-xl p-6 mb-8"
+                >
+                    <h2 className="text-xl font-bold text-slate-900 mb-4">
+                        Browse community scam reports by category
+                    </h2>
+                    <p className="text-slate-600 mb-5 text-sm">
+                        Pick a category to filter the reports feed, or jump straight to the latest and trending fraud campaigns.
+                    </p>
+                    <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 list-none p-0">
+                        <li>
+                            <Link
+                                href="/reports/websites"
+                                className="flex items-start gap-3 p-4 rounded-lg border border-slate-200 hover:border-blue-400 transition-colors h-full"
+                            >
+                                <Globe className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                                <span>
+                                    <span className="block font-semibold text-slate-900">
+                                        Reported scam websites and phishing URLs
+                                    </span>
+                                    <span className="block text-xs text-slate-500 mt-1">
+                                        Fake stores, lookalike domains, malicious redirects
+                                    </span>
+                                </span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/reports/phone-numbers"
+                                className="flex items-start gap-3 p-4 rounded-lg border border-slate-200 hover:border-blue-400 transition-colors h-full"
+                            >
+                                <Phone className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                                <span>
+                                    <span className="block font-semibold text-slate-900">
+                                        Reported scam phone numbers and SMS senders
+                                    </span>
+                                    <span className="block text-xs text-slate-500 mt-1">
+                                        Fake delivery texts, bank impersonation, robocalls
+                                    </span>
+                                </span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/reports/emails"
+                                className="flex items-start gap-3 p-4 rounded-lg border border-slate-200 hover:border-blue-400 transition-colors h-full"
+                            >
+                                <Mail className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                                <span>
+                                    <span className="block font-semibold text-slate-900">
+                                        Reported scam email addresses and phishing senders
+                                    </span>
+                                    <span className="block text-xs text-slate-500 mt-1">
+                                        Phishing, fake invoices, business email compromise
+                                    </span>
+                                </span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/reports/crypto-wallets"
+                                className="flex items-start gap-3 p-4 rounded-lg border border-slate-200 hover:border-blue-400 transition-colors h-full"
+                            >
+                                <Coins className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                                <span>
+                                    <span className="block font-semibold text-slate-900">
+                                        Reported scam crypto wallets and DeFi addresses
+                                    </span>
+                                    <span className="block text-xs text-slate-500 mt-1">
+                                        Rug pulls, fake giveaways, pig-butchering investment fraud
+                                    </span>
+                                </span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/reports/latest"
+                                className="flex items-start gap-3 p-4 rounded-lg border border-slate-200 hover:border-blue-400 transition-colors h-full"
+                            >
+                                <Clock className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                                <span>
+                                    <span className="block font-semibold text-slate-900">
+                                        Latest scam reports across all categories
+                                    </span>
+                                    <span className="block text-xs text-slate-500 mt-1">
+                                        Fresh fraud attempts flagged in the last few days
+                                    </span>
+                                </span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href="/reports/trending"
+                                className="flex items-start gap-3 p-4 rounded-lg border border-slate-200 hover:border-blue-400 transition-colors h-full"
+                            >
+                                <Flame className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                                <span>
+                                    <span className="block font-semibold text-slate-900">
+                                        Trending scam reports and active campaigns
+                                    </span>
+                                    <span className="block text-xs text-slate-500 mt-1">
+                                        Repeat-offender numbers, surging phishing waves
+                                    </span>
+                                </span>
+                            </Link>
+                        </li>
+                    </ul>
+                </nav>
 
                 {/* Cross-linking CTAs */}
                 <div className="grid md:grid-cols-2 gap-4 mb-8">

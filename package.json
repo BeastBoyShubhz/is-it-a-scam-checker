@@ -10,6 +10,7 @@
     "type-check": "tsc --noEmit",
     "test": "vitest",
     "test:smoke": "node scripts/smoke-test.js",
+    "test:links": "node scripts/check-internal-links.mjs",
     "generate-blog": "npx tsx scripts/generate-scam-post.ts",
     "postinstall": "prisma generate"
   },

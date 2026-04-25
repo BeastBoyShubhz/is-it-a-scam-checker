@@ -1,4 +1,3 @@
-
 import { MetadataRoute } from 'next'
 import { guides } from '@/lib/guides'
 import { getAllPosts } from '@/lib/posts'
@@ -20,6 +19,34 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.7,
     }))
 
+    const reportCategoryRoutes = [
+        '/reports/websites',
+        '/reports/phone-numbers',
+        '/reports/emails',
+        '/reports/crypto-wallets',
+        '/reports/latest',
+        '/reports/trending',
+    ].map((route) => ({
+        url: `${baseUrl}${route}`,
+        lastModified: new Date(),
+        changeFrequency: 'daily' as const,
+        priority: 0.7,
+    }))
+
+    const hubRoutes = [
+        '/scam-types',
+        '/scam-examples',
+        '/scam-guides',
+        '/scam-tools',
+        '/latest-scams',
+        '/report-a-scam',
+    ].map((route) => ({
+        url: `${baseUrl}${route}`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: 0.8,
+    }))
+
     const staticRoutes = [
         '',
         '/about',
@@ -35,6 +62,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/check-scam-link',
         '/check',
         '/have-i-been-scammed',
+        '/i-got-a-scam-message',
+        '/global-scam-reporting',
         '/reports',
     ].map((route) => ({
         url: `${baseUrl}${route}`,
@@ -43,5 +72,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: route === '' ? 1 : 0.6,
     }))
 
-    return [...staticRoutes, ...guideUrls, ...blogUrls]
+    return [...staticRoutes, ...hubRoutes, ...reportCategoryRoutes, ...guideUrls, ...blogUrls]
 }

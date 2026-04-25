@@ -1,43 +1,124 @@
-
 import Link from 'next/link';
+
+type FooterLink = { href: string; label: string; emphasis?: 'red' };
+
+const sections: { heading: string; links: FooterLink[] }[] = [
+    {
+        heading: 'Tools',
+        links: [
+            { href: '/check', label: 'General scam checker' },
+            { href: '/check-scam-text', label: 'Check a suspicious text or SMS' },
+            { href: '/check-scam-email', label: 'Check a suspicious email' },
+            { href: '/check-scam-link', label: 'Check a suspicious link or URL' },
+            {
+                href: '/guides/is-this-website-legit',
+                label: 'Is this website legit? Buyer guide',
+            },
+            { href: '/scam-tools', label: 'All free scam-checking tools' },
+            {
+                href: '/have-i-been-scammed',
+                label: 'Have I been scammed? Damage-control checklist',
+                emphasis: 'red',
+            },
+        ],
+    },
+    {
+        heading: 'Learn',
+        links: [
+            { href: '/scam-types', label: 'Scam types explained by category' },
+            { href: '/scam-examples', label: 'Real scam message examples' },
+            { href: '/scam-guides', label: 'Scam identification guides' },
+            { href: '/guides', label: 'All guides on Scam Checker' },
+            { href: '/blog', label: 'Scam alerts and fraud news blog' },
+            { href: '/how-it-works', label: 'How our scam detection works' },
+        ],
+    },
+    {
+        heading: 'Community',
+        links: [
+            { href: '/reports', label: 'Community-reported scams' },
+            { href: '/reports/latest', label: 'Latest community scam reports' },
+            { href: '/reports/trending', label: 'Trending scam reports' },
+            { href: '/reports/websites', label: 'Reported scam websites' },
+            { href: '/reports/phone-numbers', label: 'Reported scam phone numbers' },
+            { href: '/reports/emails', label: 'Reported scam email senders' },
+            { href: '/reports/crypto-wallets', label: 'Reported scam crypto wallets' },
+            { href: '/latest-scams', label: 'Latest scam alerts and campaigns' },
+            { href: '/report-a-scam', label: 'Report a scam in 60 seconds' },
+            {
+                href: '/global-scam-reporting',
+                label: 'Official scam reporting by country',
+            },
+        ],
+    },
+    {
+        heading: 'Trust',
+        links: [
+            { href: '/about', label: 'About Scam Checker' },
+            { href: '/contact', label: 'Contact the team' },
+            { href: '/privacy', label: 'Privacy policy' },
+            { href: '/terms', label: 'Terms of use' },
+            { href: '/disclaimer', label: 'Disclaimer' },
+        ],
+    },
+];
 
 export function Footer() {
     return (
         <footer className="w-full bg-slate-900 text-slate-300 py-12 mt-auto">
             <div className="container mx-auto px-4">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                    <div className="md:col-span-2">
-                        <h3 className="text-white font-bold text-lg mb-4">Scam Checker</h3>
-                        <p className="text-sm mb-4">
-                            Free tool to check if a website, email, or message is safe. We use pattern recognition to help people identify scams before they become victims.
-                        </p>
-                        <p className="text-sm font-medium text-emerald-400">
-                            Free, private scam checks. No sign-up required.
-                        </p>
-                    </div>
-                    <div>
-                        <h3 className="text-white font-bold text-lg mb-4">Quick Links</h3>
-                        <ul className="space-y-2 text-sm">
-                            <li><Link href="/check" className="hover:text-white font-medium">Check a suspicious message or link</Link></li>
-                            <li><Link href="/have-i-been-scammed" className="text-red-400 font-bold hover:text-red-300">Have I Been Scammed? (Damage Control)</Link></li>
-                            <li><Link href="/guides" className="hover:text-white">Browse scam identification guides</Link></li>
-                            <li><Link href="/reports" className="hover:text-white">View community scam reports</Link></li>
-                            <li><Link href="/how-it-works" className="hover:text-white">How our detection works</Link></li>
-                            <li><Link href="/about" className="hover:text-white">About this project</Link></li>
-                            <li><Link href="/contact" className="hover:text-white">Contact us</Link></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 className="text-white font-bold text-lg mb-4">Legal</h3>
-                        <ul className="space-y-2 text-sm">
-                            <li><Link href="/privacy" className="hover:text-white">Privacy Policy</Link></li>
-                            <li><Link href="/terms" className="hover:text-white">Terms of Use</Link></li>
-                            <li><Link href="/disclaimer" className="hover:text-white">Disclaimer</Link></li>
-                        </ul>
-                    </div>
+                <div className="mb-10">
+                    <h3 className="text-white font-bold text-lg mb-3">Scam Checker</h3>
+                    <p className="text-sm max-w-2xl mb-2 leading-relaxed">
+                        Free tools and guides to check whether a website, email, or
+                        message is a scam. We use pattern recognition to help people
+                        identify fraud before they become victims.
+                    </p>
+                    <p className="text-sm font-medium text-emerald-400">
+                        Free, private scam checks. No sign-up required.
+                    </p>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+                    {sections.map((section) => (
+                        <nav
+                            key={section.heading}
+                            aria-label={`Footer ${section.heading} links`}
+                        >
+                            <h3 className="text-white font-bold text-base mb-4">
+                                {section.heading}
+                            </h3>
+                            <ul className="space-y-2 text-sm">
+                                {section.links.map((link) => (
+                                    <li key={link.href}>
+                                        <Link
+                                            href={link.href}
+                                            className={
+                                                link.emphasis === 'red'
+                                                    ? 'text-red-400 font-bold hover:text-red-300'
+                                                    : 'hover:text-white'
+                                            }
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </nav>
+                    ))}
                 </div>
                 <div className="border-t border-slate-700 pt-8 text-center text-sm">
-                    <p className="mb-2">Developed and owned by <a href="https://shubhamsingla.tech" target="_blank" rel="noopener noreferrer" className="text-white hover:underline">shubhamsingla.tech</a></p>
+                    <p className="mb-2">
+                        Developed and owned by{' '}
+                        <a
+                            href="https://shubhamsingla.tech"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-white hover:underline"
+                        >
+                            Shubham Singla — shubhamsingla.tech
+                        </a>
+                    </p>
                     <p>© {new Date().getFullYear()} Scam Checker. All rights reserved.</p>
                 </div>
             </div>
